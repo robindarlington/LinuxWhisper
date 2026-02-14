@@ -10,7 +10,7 @@ LinuxWhisper delivers local voice dictation for Linux through eight phases, star
 - Integer phases (1, 2, 3): Planned milestone work
 - Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
 
-- [ ] **Phase 1: Foundation** - Daemon process, config management, project structure
+- [x] **Phase 1: Foundation** - Daemon process, config management, project structure ✓ 2026-02-15
 - [ ] **Phase 2: Core Dictation Pipeline** - Hold-to-talk hotkey, audio capture, Whisper transcription, text injection
 - [ ] **Phase 3: Enhanced Input Modes** - Toggle mode, configurable hotkeys, non-interference validation
 - [ ] **Phase 4: Audio Optimization** - Voice Activity Detection, PipeWire/PulseAudio integration, proper audio format
@@ -33,8 +33,8 @@ LinuxWhisper delivers local voice dictation for Linux through eight phases, star
 **Plans**: 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Project structure, packaging, and config system
-- [ ] 01-02-PLAN.md — Daemon core, CLI commands, PID management, logging
+- [x] 01-01-PLAN.md — Project structure, packaging, and config system
+- [x] 01-02-PLAN.md — Daemon core, CLI commands, PID management, logging
 
 ### Phase 2: Core Dictation Pipeline
 **Goal**: User can hold hotkey, speak, release, and text appears in active window
@@ -150,7 +150,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/2 | Planned | - |
+| 1. Foundation | 2/2 | ✓ Complete | 2026-02-15 |
 | 2. Core Dictation Pipeline | 0/4 | Planned | - |
 | 3. Enhanced Input Modes | 0/? | Not started | - |
 | 4. Audio Optimization | 0/? | Not started | - |
@@ -161,4 +161,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 
 ---
 *Roadmap created: 2026-02-15*
-*Ready for planning: Phase 1*
+*Phase 1 completed: 2026-02-15*
+*Ready for planning: Phase 2*

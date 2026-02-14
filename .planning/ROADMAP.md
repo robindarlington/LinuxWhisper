@@ -45,11 +45,14 @@ Plans:
   2. Releasing F13 stops recording and triggers transcription
   3. Transcribed text appears in the active window within 2 seconds
   4. Works on both X11 and Wayland sessions (runtime detection)
-  5. Non-ASCII text (café, emoji) transcribes correctly
-**Plans**: TBD
+  5. Non-ASCII text (cafe, emoji) transcribes correctly
+**Plans**: 4 plans
 
 Plans:
-- [ ] 02-01: TBD during planning
+- [ ] 02-01-PLAN.md — Hotkey detection (evdev) and audio recording (sounddevice)
+- [ ] 02-02-PLAN.md — Transcription engine (faster-whisper) and text injection (ydotool/xdotool)
+- [ ] 02-03-PLAN.md — Pipeline state machine coordinator and daemon integration
+- [ ] 02-04-PLAN.md — End-to-end verification checkpoint
 
 ### Phase 3: Enhanced Input Modes
 **Goal**: User can choose between hold-to-talk and toggle modes with custom hotkeys
@@ -143,12 +146,12 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 0/2 | Planned | - |
-| 2. Core Dictation Pipeline | 0/? | Not started | - |
+| 2. Core Dictation Pipeline | 0/4 | Planned | - |
 | 3. Enhanced Input Modes | 0/? | Not started | - |
 | 4. Audio Optimization | 0/? | Not started | - |
 | 5. Transcription Features | 0/? | Not started | - |

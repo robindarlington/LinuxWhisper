@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68.0", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "linuxwhisper"
+version = "0.1.0"
+description = "Linux desktop voice dictation tool"
+requires-python = ">=3.11"
+dependencies = [
+    "click>=8.1",
+    "tomli-w>=1.0",
+    "xdg-base-dirs>=6.0",
+]
+
+[project.scripts]
+linuxwhisper = "linuxwhisper.cli.commands:cli"
+
+[tool.setuptools.packages.find]
+where = ["src"]

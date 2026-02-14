@@ -1,0 +1,1 @@
+"""Daemon process for LinuxWhisper."""

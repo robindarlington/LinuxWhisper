@@ -92,35 +92,35 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DICT-01 | — | Pending |
-| DICT-02 | — | Pending |
-| DICT-03 | — | Pending |
-| DICT-04 | — | Pending |
-| AUDIO-01 | — | Pending |
-| AUDIO-02 | — | Pending |
-| AUDIO-03 | — | Pending |
-| TRANS-01 | — | Pending |
-| TRANS-02 | — | Pending |
-| TRANS-03 | — | Pending |
-| TRANS-04 | — | Pending |
-| INPUT-01 | — | Pending |
-| INPUT-02 | — | Pending |
-| INPUT-03 | — | Pending |
-| OUTPUT-01 | — | Pending |
-| OUTPUT-02 | — | Pending |
-| OUTPUT-03 | — | Pending |
-| SYS-01 | — | Pending |
-| SYS-02 | — | Pending |
-| SYS-03 | — | Pending |
-| SYS-04 | — | Pending |
-| PKG-01 | — | Pending |
-| PKG-02 | — | Pending |
+| DICT-01 | Phase 2 | Pending |
+| DICT-02 | Phase 3 | Pending |
+| DICT-03 | Phase 2 | Pending |
+| DICT-04 | Phase 6 | Pending |
+| AUDIO-01 | Phase 4 | Pending |
+| AUDIO-02 | Phase 4 | Pending |
+| AUDIO-03 | Phase 4 | Pending |
+| TRANS-01 | Phase 2 | Pending |
+| TRANS-02 | Phase 5 | Pending |
+| TRANS-03 | Phase 5 | Pending |
+| TRANS-04 | Phase 5 | Pending |
+| INPUT-01 | Phase 2 | Pending |
+| INPUT-02 | Phase 3 | Pending |
+| INPUT-03 | Phase 3 | Pending |
+| OUTPUT-01 | Phase 2 | Pending |
+| OUTPUT-02 | Phase 6 | Pending |
+| OUTPUT-03 | Phase 6 | Pending |
+| SYS-01 | Phase 1 | Pending |
+| SYS-02 | Phase 7 | Pending |
+| SYS-03 | Phase 7 | Pending |
+| SYS-04 | Phase 1 | Pending |
+| PKG-01 | Phase 8 | Pending |
+| PKG-02 | Phase 8 | Pending |
 
 **Coverage:**
 - v1 requirements: 23 total
-- Mapped to phases: 0
-- Unmapped: 23 (pending roadmap)
+- Mapped to phases: 23
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-15*
-*Last updated: 2026-02-15 after initial definition*
+*Last updated: 2026-02-15 after roadmap creation*

@@ -30,10 +30,11 @@ LinuxWhisper delivers local voice dictation for Linux through eight phases, star
   2. Config file loads from ~/.config/linuxwhisper/config.toml with defaults if missing
   3. Daemon accepts stop/reload commands via CLI
   4. Basic logging captures daemon lifecycle events
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 01-01: TBD during planning
+- [ ] 01-01-PLAN.md — Project structure, packaging, and config system
+- [ ] 01-02-PLAN.md — Daemon core, CLI commands, PID management, logging
 
 ### Phase 2: Core Dictation Pipeline
 **Goal**: User can hold hotkey, speak, release, and text appears in active window
@@ -146,7 +147,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/? | Not started | - |
+| 1. Foundation | 0/2 | Planned | - |
 | 2. Core Dictation Pipeline | 0/? | Not started | - |
 | 3. Enhanced Input Modes | 0/? | Not started | - |
 | 4. Audio Optimization | 0/? | Not started | - |

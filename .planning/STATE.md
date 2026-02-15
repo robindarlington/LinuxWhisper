@@ -5,32 +5,33 @@
 See: .planning/PROJECT.md (updated 2026-02-14)
 
 **Core value:** Hold a key, speak, text appears in the active window — fast, reliable, and works on any Linux display server.
-**Current focus:** Phase 1 - Foundation
+**Current focus:** Phase 2 - Core Dictation Pipeline
 
 ## Current Position
 
-Phase: 1 of 8 (Foundation)
-Plan: 2 of 2 in current phase
+Phase: 2 of 8 (Core Dictation Pipeline)
+Plan: 2 of 4 in current phase
 Status: In progress
-Last activity: 2026-02-15 — Completed plan 01-02 (Daemon Process and CLI Commands)
+Last activity: 2026-02-15 — Completed plan 02-01 (Hotkey Detection and Audio Recording)
 
-Progress: [██░░░░░░░░] 25.0%
+Progress: [███░░░░░░░] 37.5%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2
-- Average duration: 3 minutes
-- Total execution time: 0.1 hours
+- Total plans completed: 3
+- Average duration: 4 minutes
+- Total execution time: 0.2 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01    | 2     | 6 min | 3 min    |
+| 02    | 1     | 5 min | 5 min    |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (3m), 01-02 (3m)
+- Last 5 plans: 01-01 (3m), 01-02 (3m), 02-01 (5m)
 - Trend: Consistent execution velocity
 
 *Updated after each plan completion*
@@ -52,6 +53,10 @@ Recent decisions affecting current work:
 - XDG runtime dir for PID file with fallback to ~/.local/run — 01-02
 - Signal-based daemon control: SIGTERM/SIGINT for stop, SIGHUP for reload — 01-02
 - Log to stdout for systemd journal capture — 01-02
+- Use evdev device grabbing to prevent hotkey propagation to other applications — 02-01
+- Support both KEY_F13 and F13 formats for hotkey configuration flexibility — 02-01
+- 16kHz mono int16 WAV format for optimal Whisper compatibility — 02-01
+- Queue-based non-blocking audio recording with callback pattern — 02-01
 
 ### Pending Todos
 
@@ -68,7 +73,7 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-15 (plan execution)
-Stopped at: Completed 01-02-PLAN.md - Daemon Process and CLI Commands
+Stopped at: Completed 02-01-PLAN.md - Hotkey Detection and Audio Recording
 Resume file: None
 
 ---

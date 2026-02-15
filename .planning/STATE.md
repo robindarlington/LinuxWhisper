@@ -10,29 +10,29 @@ See: .planning/PROJECT.md (updated 2026-02-14)
 ## Current Position
 
 Phase: 2 of 8 (Core Dictation Pipeline)
-Plan: 3 of 4 in current phase
+Plan: 4 of 4 in current phase
 Status: In progress
-Last activity: 2026-02-15 — Completed plan 02-02 (Transcription Engine and Text Injection)
+Last activity: 2026-02-15 — Completed plan 02-03 (Pipeline Coordinator and State Machine)
 
-Progress: [████░░░░░░] 50.0%
+Progress: [█████░░░░░] 62.5%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
-- Average duration: 6 minutes
-- Total execution time: 0.4 hours
+- Total plans completed: 5
+- Average duration: 4 minutes
+- Total execution time: 0.3 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01    | 2     | 6 min  | 3 min    |
-| 02    | 2     | 16 min | 8 min    |
+| 02    | 3     | 18 min | 6 min    |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (3m), 01-02 (3m), 02-01 (5m), 02-02 (11m)
-- Trend: Phase 2 plans taking longer (more complex implementation)
+- Last 5 plans: 01-02 (3m), 02-01 (5m), 02-02 (11m), 02-03 (2m)
+- Trend: 02-03 was faster due to well-defined integration task
 
 *Updated after each plan completion*
 
@@ -63,6 +63,12 @@ Recent decisions affecting current work:
 - Multi-method session detection — robust X11/Wayland identification — 02-02
 - Factory pattern for injector creation — clean auto-selection based on session — 02-02
 - Validate tool availability at init — fail fast with clear error messages — 02-02
+- State machine with VALID_TRANSITIONS map prevents invalid state transitions — 02-03
+- Hotkey detector runs in daemon thread while processing runs synchronously in callback — 02-03
+- Error handling always returns to IDLE state for resilience — 02-03
+- Permission check at daemon startup prevents cryptic evdev errors — 02-03
+- Pre-load Whisper model on pipeline start for fast first dictation — 02-03
+- Config reload requires daemon restart for hotkey/model changes (acceptable for Phase 2) — 02-03
 
 ### Pending Todos
 
@@ -79,7 +85,7 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-15 (plan execution)
-Stopped at: Completed 02-02-PLAN.md - Transcription Engine and Text Injection
+Stopped at: Completed 02-03-PLAN.md - Pipeline Coordinator and State Machine
 Resume file: None
 
 ---

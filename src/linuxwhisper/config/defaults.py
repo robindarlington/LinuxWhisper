@@ -7,6 +7,7 @@ DEFAULT_CONFIG = {
     "audio": {
         "sample_rate": 16000,
         "channels": 1,
+        "device": None,  # Use default audio device
     },
     "logging": {
         "level": "INFO",

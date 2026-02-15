@@ -2,9 +2,12 @@
 
 import logging
 import signal
+import sys
 import time
 from linuxwhisper.config import load_config
 from linuxwhisper.daemon.lifecycle import setup_daemon, shutdown_daemon, reload_config
+from linuxwhisper.pipeline import DictationPipeline
+from linuxwhisper.hotkey import check_input_permissions, get_permission_instructions
 
 logger = logging.getLogger(__name__)
 
@@ -26,6 +29,7 @@ def signal_handler(signum: int, frame) -> None:
     elif signum == signal.SIGHUP:
         logger.info(f"Received SIGHUP, reloading configuration")
         reload_config()
+        logger.info("Config reloaded. Restart daemon for hotkey/model changes to take effect.")
 
 
 def run_daemon() -> None:
@@ -42,6 +46,23 @@ def run_daemon() -> None:
     # Set up daemon (logging, PID file)
     setup_daemon(config)
 
+    # Check input permissions before starting pipeline
+    if not check_input_permissions():
+        error_msg = f"Input permissions not available.\n{get_permission_instructions()}"
+        logger.error(error_msg)
+        shutdown_daemon()
+        sys.exit(1)
+
+    # Create and start the dictation pipeline
+    pipeline = None
+    try:
+        pipeline = DictationPipeline(config)
+        pipeline.start()
+    except Exception as e:
+        logger.error(f"Failed to start dictation pipeline: {e}", exc_info=True)
+        shutdown_daemon()
+        sys.exit(1)
+
     # Register signal handlers
     signal.signal(signal.SIGTERM, signal_handler)
     signal.signal(signal.SIGINT, signal_handler)
@@ -49,16 +70,19 @@ def run_daemon() -> None:
 
     logger.info("LinuxWhisper daemon started")
 
-    # Main loop - just keep running until stopped
-    # Future phases will add real functionality here
+    # Main loop - keep running until stopped
+    # The pipeline runs in a daemon thread, main thread just sleeps
     try:
         while running:
-            time.sleep(0.1)
+            time.sleep(0.5)
     except KeyboardInterrupt:
         # Handle Ctrl+C gracefully
         logger.info("Keyboard interrupt received")
         running = False
 
-    # Clean shutdown
+    # Clean shutdown - stop pipeline before removing PID file
+    if pipeline:
+        pipeline.stop()
+
     logger.info("LinuxWhisper daemon stopped")
     shutdown_daemon()

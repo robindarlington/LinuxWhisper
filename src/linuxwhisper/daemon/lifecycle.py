@@ -72,3 +72,12 @@ def reload_config() -> dict:
     logger.info("Configuration reloaded successfully")
 
     return new_config
+
+
+def get_current_config() -> dict:
+    """Get the current configuration without re-reading from disk.
+
+    Returns:
+        Current configuration dictionary, or empty dict if not initialized
+    """
+    return _current_config if _current_config is not None else {}

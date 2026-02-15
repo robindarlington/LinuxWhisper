@@ -10,29 +10,29 @@ See: .planning/PROJECT.md (updated 2026-02-14)
 ## Current Position
 
 Phase: 2 of 8 (Core Dictation Pipeline)
-Plan: 2 of 4 in current phase
+Plan: 3 of 4 in current phase
 Status: In progress
-Last activity: 2026-02-15 — Completed plan 02-01 (Hotkey Detection and Audio Recording)
+Last activity: 2026-02-15 — Completed plan 02-02 (Transcription Engine and Text Injection)
 
-Progress: [███░░░░░░░] 37.5%
+Progress: [████░░░░░░] 50.0%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
-- Average duration: 4 minutes
-- Total execution time: 0.2 hours
+- Total plans completed: 4
+- Average duration: 6 minutes
+- Total execution time: 0.4 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01    | 2     | 6 min | 3 min    |
-| 02    | 1     | 5 min | 5 min    |
+| 01    | 2     | 6 min  | 3 min    |
+| 02    | 2     | 16 min | 8 min    |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (3m), 01-02 (3m), 02-01 (5m)
-- Trend: Consistent execution velocity
+- Last 5 plans: 01-01 (3m), 01-02 (3m), 02-01 (5m), 02-02 (11m)
+- Trend: Phase 2 plans taking longer (more complex implementation)
 
 *Updated after each plan completion*
 
@@ -57,6 +57,12 @@ Recent decisions affecting current work:
 - Support both KEY_F13 and F13 formats for hotkey configuration flexibility — 02-01
 - 16kHz mono int16 WAV format for optimal Whisper compatibility — 02-01
 - Queue-based non-blocking audio recording with callback pattern — 02-01
+- INT8 quantization for CPU, int8_float16 for GPU — optimal speed for local transcription — 02-02
+- Lazy model loading — daemon controls when expensive model load happens — 02-02
+- VAD filtering with custom parameters — better transcription quality — 02-02
+- Multi-method session detection — robust X11/Wayland identification — 02-02
+- Factory pattern for injector creation — clean auto-selection based on session — 02-02
+- Validate tool availability at init — fail fast with clear error messages — 02-02
 
 ### Pending Todos
 
@@ -73,7 +79,7 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-15 (plan execution)
-Stopped at: Completed 02-01-PLAN.md - Hotkey Detection and Audio Recording
+Stopped at: Completed 02-02-PLAN.md - Transcription Engine and Text Injection
 Resume file: None
 
 ---

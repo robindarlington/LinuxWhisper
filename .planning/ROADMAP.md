@@ -63,10 +63,11 @@ Plans:
   2. User can configure hotkey binding via config file
   3. Configured hotkey does not interfere with compositor bindings (validated at startup)
   4. Mode selection persists across daemon restarts
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 03-01: TBD during planning
+- [ ] 03-01-PLAN.md — Toggle mode dispatch, InputMode enum, hotkey validation, compositor conflict detection
+- [ ] 03-02-PLAN.md — State-aware config reload and daemon integration
 
 ### Phase 4: Audio Optimization
 **Goal**: Audio capture works reliably across audio stacks with automatic silence detection
@@ -152,7 +153,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | ✓ Complete | 2026-02-15 |
 | 2. Core Dictation Pipeline | 0/4 | Planned | - |
-| 3. Enhanced Input Modes | 0/? | Not started | - |
+| 3. Enhanced Input Modes | 0/2 | Planned | - |
 | 4. Audio Optimization | 0/? | Not started | - |
 | 5. Transcription Features | 0/? | Not started | - |
 | 6. Output Refinement | 0/? | Not started | - |

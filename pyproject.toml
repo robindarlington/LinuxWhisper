@@ -11,6 +11,10 @@ dependencies = [
     "click>=8.1",
     "tomli-w>=1.0",
     "xdg-base-dirs>=6.0",
+    "evdev>=1.9",
+    "sounddevice>=0.5",
+    "faster-whisper",
+    "scipy",
 ]
 
 [project.scripts]

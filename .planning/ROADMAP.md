@@ -79,10 +79,10 @@ Plans:
   3. Transcription completes in under 500ms after recording stops
   4. Sentences auto-capitalize first word and add period at end (full sentence mode)
   5. Model switches apply after daemon reload without restarting system
-**Plans**: TBD
+**Plans**: 1 plan
 
 Plans:
-- [ ] 04-01: TBD during planning
+- [ ] 04-01-PLAN.md — Config model validation, numpy passthrough, sentence formatting, model hot-reload via SIGHUP
 
 ### Phase 5: Output Refinement
 **Goal**: Text injection works universally across display servers with proper formatting
@@ -139,7 +139,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 | 1. Foundation | 2/2 | ✓ Complete | 2026-02-15 |
 | 2. Core Dictation Pipeline | 4/4 | ✓ Complete | 2026-02-18 |
 | 3. Enhanced Input Modes | 2/2 | ✓ Complete | 2026-02-18 |
-| 4. Transcription Features | 0/? | Not started | - |
+| 4. Transcription Features | 0/1 | Planned | - |
 | 5. Output Refinement | 0/? | Not started | - |
 | 6. System Integration | 0/? | Not started | - |
 | 7. Distribution | 0/? | Not started | - |

@@ -15,7 +15,7 @@ LinuxWhisper delivers local voice dictation for Linux through eight phases, star
 - [x] **Phase 3: Enhanced Input Modes** - Toggle mode, configurable hotkeys, non-interference validation ✓ 2026-02-18
 - [x] **Phase 4: Transcription Features** - Model selection, daemon memory loading, sentence formatting ✓ 2026-02-18
 - [x] **Phase 5: Output Refinement** - Display server detection, Unicode support, spacing control ✓ 2026-02-18
-- [ ] **Phase 6: Recording Overlay** - Live waveform widget during recording, layer-shell positioning
+- [x] **Phase 6: Recording Overlay** - Live waveform widget during recording, layer-shell positioning ✓ 2026-02-18
 - [ ] **Phase 7: System Integration** - systemd user service, auto-start, crash recovery
 - [ ] **Phase 8: Distribution** - AUR package, post-install instructions
 
@@ -116,7 +116,7 @@ Plans:
 
 Plans:
 - [x] 06-01-PLAN.md — Overlay subprocess module: OverlayManager API, GTK4 window with layer-shell, Cairo waveform widget, stdin pipe reader
-- [ ] 06-02-PLAN.md — Pipeline integration: amplitude callback on AudioRecorder, overlay show/hide in coordinator state machine, overlay config defaults
+- [x] 06-02-PLAN.md — Pipeline integration: amplitude callback on AudioRecorder, overlay show/hide in coordinator state machine, overlay config defaults
 
 ### Phase 7: System Integration
 **Goal**: LinuxWhisper runs as a systemd user service with auto-start and crash recovery
@@ -159,7 +159,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 3. Enhanced Input Modes | 2/2 | ✓ Complete | 2026-02-18 |
 | 4. Transcription Features | 1/1 | ✓ Complete | 2026-02-18 |
 | 5. Output Refinement | 2/2 | ✓ Complete | 2026-02-18 |
-| 6. Recording Overlay | 1/2 | In progress | - |
+| 6. Recording Overlay | 2/2 | Complete | 2026-02-18 |
 | 7. System Integration | 0/? | Not started | - |
 | 8. Distribution | 0/? | Not started | - |
 
@@ -173,3 +173,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 *Phase 5 completed: 2026-02-18*
 *Phases 6-7 restructured: 2026-02-18 — Recording Overlay added as Phase 6, old Phase 6 (System Integration) slimmed and moved to Phase 7, Distribution moved to Phase 8*
 *Phase 6 planned: 2026-02-18 — 2 plans, 2 waves*
+*Phase 6 completed: 2026-02-18*

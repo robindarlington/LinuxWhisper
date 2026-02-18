@@ -5,21 +5,21 @@
 See: .planning/PROJECT.md (updated 2026-02-14)
 
 **Core value:** Hold a key, speak, text appears in the active window — fast, reliable, and works on any Linux display server.
-**Current focus:** Phase 6 in progress (Recording Overlay)
+**Current focus:** Phase 6 complete (Recording Overlay)
 
 ## Current Position
 
-Phase: 6 of 7 (Recording Overlay) - IN PROGRESS
-Plan: 1 of 1 in current phase
-Status: Plan 06-01 complete
-Last activity: 2026-02-18 — Completed plan 06-01 (Overlay module)
+Phase: 6 of 7 (Recording Overlay) - COMPLETE
+Plan: 2 of 2 in current phase
+Status: Plan 06-02 complete -- Phase 6 done
+Last activity: 2026-02-18 — Completed plan 06-02 (Pipeline overlay integration)
 
-Progress: [█████████░] 97%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 11
+- Total plans completed: 12
 - Average duration: 4 minutes
 - Total execution time: 1.0 hours
 
@@ -32,10 +32,10 @@ Progress: [█████████░] 97%
 | 03    | 2     | 5 min  | 2.5 min  |
 | 04    | 1     | 3 min  | 3 min    |
 | 05    | 2     | 5 min  | 2.5 min  |
-| 06    | 1     | 3 min  | 3 min    |
+| 06    | 2     | 5 min  | 2.5 min  |
 
 **Recent Trend:**
-- Last 5 plans: 03-02 (2m), 04-01 (3m), 05-01 (3m), 05-02 (2m), 06-01 (3m)
+- Last 5 plans: 04-01 (3m), 05-01 (3m), 05-02 (2m), 06-01 (3m), 06-02 (2m)
 - Trend: Phases 3-6 executing cleanly — all plans under 3 minutes
 
 *Updated after each plan completion*
@@ -101,6 +101,9 @@ Recent decisions affecting current work:
 - Subprocess isolation for GTK overlay — avoids main loop conflicts with daemon — 06-01
 - ctypes CDLL preload of libgtk4-layer-shell.so before any gi imports — 06-01
 - System packages only (PyGObject, pycairo, gtk4-layer-shell) — no pip deps for overlay — 06-01
+- Amplitude callback in audio _callback (not separate thread) — trivial RMS on ~1024 samples — 06-02
+- Overlay lifecycle in coordinator, not daemon — single ownership, clean state machine integration — 06-02
+- No daemon/main.py changes needed — pipeline.stop() already chains to overlay.hide() — 06-02
 
 ### Pending Todos
 
@@ -119,9 +122,9 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-18 (execution)
-Stopped at: Completed 06-01-PLAN.md - Overlay module. Phase 6 plan 1/1 done.
+Stopped at: Completed 06-02-PLAN.md - Pipeline overlay integration. Phase 6 complete (2/2 plans).
 Resume file: None
 
 ---
 *State initialized: 2026-02-15*
-*Last updated: 2026-02-18 (06-01 complete)*
+*Last updated: 2026-02-18 (06-02 complete)*

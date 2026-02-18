@@ -17,9 +17,9 @@ DEFAULT_CONFIG = {
     "auto_space": True,
     "overlay": {
         "enabled": True,
-        "position": "bottom-right",  # bottom-right, bottom-left, top-right, top-left
-        "width": 200,
-        "height": 60,
+        "position": "active-window",  # active-window, bottom-right, bottom-left, top-right, top-left
+        "width": 120,
+        "height": 32,
     },
     "audio": {
         "sample_rate": 16000,

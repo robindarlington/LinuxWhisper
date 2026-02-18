@@ -4,6 +4,7 @@ CRITICAL: libgtk4-layer-shell.so must be loaded via ctypes BEFORE any gi
 imports. This allows it to intercept Wayland calls before GTK4 initializes.
 """
 
+import argparse
 from ctypes import CDLL
 
 # Load layer-shell shared library before any GObject introspection imports.
@@ -28,13 +29,29 @@ from linuxwhisper.overlay.reader import StdinReader  # noqa: E402
 from linuxwhisper.overlay.waveform import WaveformWidget  # noqa: E402
 from linuxwhisper.overlay.window import create_overlay_window  # noqa: E402
 
+# Module-level args, set in main() before GTK runs
+_args: argparse.Namespace | None = None
+
 
 def on_activate(app: Gtk.Application) -> None:
     """Application activate handler — creates window and wires components."""
     use_layer_shell = _layer_shell_available and LayerShell.is_supported()
-    window = create_overlay_window(app, use_layer_shell=use_layer_shell)
 
-    waveform = WaveformWidget()
+    width = _args.width if _args else 120
+    height = _args.height if _args else 32
+    abs_x = _args.x if _args else None
+    abs_y = _args.y if _args else None
+
+    window = create_overlay_window(
+        app,
+        use_layer_shell=use_layer_shell,
+        width=width,
+        height=height,
+        abs_x=abs_x,
+        abs_y=abs_y,
+    )
+
+    waveform = WaveformWidget(history_size=40)
     window.set_child(waveform)
 
     reader = StdinReader(waveform)
@@ -46,6 +63,16 @@ def on_activate(app: Gtk.Application) -> None:
 
 def main() -> None:
     """Entry point for the overlay subprocess."""
+    global _args
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--width", type=int, default=120)
+    parser.add_argument("--height", type=int, default=32)
+    parser.add_argument("--x", type=int, default=None)
+    parser.add_argument("--y", type=int, default=None)
+    parser.add_argument("--position", type=str, default=None)
+    _args = parser.parse_args()
+
     app = Gtk.Application(application_id="com.linuxwhisper.overlay")
     app.connect("activate", on_activate)
     app.run(None)

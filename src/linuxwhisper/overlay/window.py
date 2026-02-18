@@ -23,9 +23,10 @@ def create_overlay_window(
     app: Gtk.Application,
     *,
     use_layer_shell: bool = False,
-    width: int = 200,
-    height: int = 60,
-    margin: int = 20,
+    width: int = 120,
+    height: int = 32,
+    abs_x: int | None = None,
+    abs_y: int | None = None,
 ) -> Gtk.Window:
     """Create and configure the overlay window.
 
@@ -34,7 +35,10 @@ def create_overlay_window(
         use_layer_shell: Whether to use layer-shell positioning (Wayland).
         width: Window width in pixels.
         height: Window height in pixels.
-        margin: Margin from screen edges in pixels.
+        abs_x: Absolute X position (from left edge of screen). If None, falls
+               back to bottom-right corner.
+        abs_y: Absolute Y position (from top edge of screen). If None, falls
+               back to bottom-right corner.
 
     Returns:
         Configured Gtk.Window (not yet presented).
@@ -45,36 +49,48 @@ def create_overlay_window(
     window.set_resizable(False)
 
     if use_layer_shell and LayerShell is not None:
-        _setup_layer_shell(window, margin)
+        if abs_x is not None and abs_y is not None:
+            _setup_layer_shell_absolute(window, abs_x, abs_y)
+        else:
+            _setup_layer_shell_corner(window, margin=20)
 
     _apply_css(window)
     return window
 
 
-def _setup_layer_shell(window: Gtk.Window, margin: int) -> None:
-    """Configure window as a Wayland layer-shell surface.
+def _setup_layer_shell_absolute(
+    window: Gtk.Window, x: int, y: int
+) -> None:
+    """Position overlay at absolute screen coordinates via layer-shell.
 
-    Anchored to bottom-right corner, TOP layer, no keyboard focus,
-    no exclusive zone (does not push other windows).
+    Uses TOP+LEFT anchors with margins to place the window at (x, y).
     """
     LayerShell.init_for_window(window)
     LayerShell.set_layer(window, LayerShell.Layer.TOP)
 
-    # Anchor to bottom-right corner
+    # Anchor to top-left, use margins for absolute positioning
+    LayerShell.set_anchor(window, LayerShell.Edge.TOP, True)
+    LayerShell.set_anchor(window, LayerShell.Edge.LEFT, True)
+    LayerShell.set_margin(window, LayerShell.Edge.TOP, y)
+    LayerShell.set_margin(window, LayerShell.Edge.LEFT, x)
+
+    LayerShell.set_keyboard_mode(window, LayerShell.KeyboardMode.NONE)
+    LayerShell.set_namespace(window, "linuxwhisper-overlay")
+    LayerShell.set_exclusive_zone(window, -1)
+
+
+def _setup_layer_shell_corner(window: Gtk.Window, margin: int) -> None:
+    """Fallback: anchor overlay to bottom-right corner via layer-shell."""
+    LayerShell.init_for_window(window)
+    LayerShell.set_layer(window, LayerShell.Layer.TOP)
+
     LayerShell.set_anchor(window, LayerShell.Edge.BOTTOM, True)
     LayerShell.set_anchor(window, LayerShell.Edge.RIGHT, True)
-
-    # Margins from screen edges
     LayerShell.set_margin(window, LayerShell.Edge.BOTTOM, margin)
     LayerShell.set_margin(window, LayerShell.Edge.RIGHT, margin)
 
-    # CRITICAL: no keyboard focus — overlay must never steal focus
     LayerShell.set_keyboard_mode(window, LayerShell.KeyboardMode.NONE)
-
-    # Compositor identification namespace
     LayerShell.set_namespace(window, "linuxwhisper-overlay")
-
-    # Don't push other windows around
     LayerShell.set_exclusive_zone(window, -1)
 
 

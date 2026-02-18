@@ -9,8 +9,10 @@ stdin pipe: the daemon writes RMS amplitude floats, the overlay reads
 and renders them as a waveform.
 """
 
+import json
 import logging
 import pathlib
+import shutil
 import subprocess
 import sys
 
@@ -43,6 +45,40 @@ def _overlay_env() -> dict[str, str]:
     env["PYTHONPATH"] = f"{pkg_dir}:{existing}" if existing else str(pkg_dir)
     return env
 
+
+def _get_active_window_position(
+    overlay_width: int, overlay_height: int, gap: int = 6
+) -> tuple[int, int] | None:
+    """Query Hyprland for active window geometry and compute overlay position.
+
+    Returns (x, y) to center the overlay above the active window, or None
+    if hyprctl is unavailable or fails.
+    """
+    hyprctl = shutil.which("hyprctl")
+    if hyprctl is None:
+        return None
+    try:
+        result = subprocess.run(
+            [hyprctl, "activewindow", "-j"],
+            capture_output=True,
+            text=True,
+            timeout=1,
+        )
+        if result.returncode != 0:
+            return None
+        data = json.loads(result.stdout)
+        win_x, win_y = data["at"]
+        win_w, _win_h = data["size"]
+        # Center overlay at the top of the active window
+        x = win_x + (win_w - overlay_width) // 2
+        y = win_y + gap
+        # Clamp to screen edges
+        x = max(0, x)
+        y = max(0, y)
+        return (x, y)
+    except (subprocess.TimeoutExpired, json.JSONDecodeError, KeyError, OSError):
+        return None
+
 __all__ = ["OverlayManager"]
 
 
@@ -68,9 +104,24 @@ class OverlayManager:
         if self.is_running():
             return
 
+        width = self._config.get("width", 120)
+        height = self._config.get("height", 32)
+        position = self._config.get("position", "active-window")
+
+        cmd = [_find_system_python(), "-m", "linuxwhisper.overlay",
+               "--width", str(width), "--height", str(height)]
+
+        if position == "active-window":
+            pos = _get_active_window_position(width, height)
+            if pos is not None:
+                cmd.extend(["--x", str(pos[0]), "--y", str(pos[1])])
+            # Falls back to bottom-right if hyprctl fails
+        elif position != "bottom-right":
+            cmd.extend(["--position", position])
+
         try:
             self._process = subprocess.Popen(
-                [_find_system_python(), "-m", "linuxwhisper.overlay"],
+                cmd,
                 stdin=subprocess.PIPE,
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,

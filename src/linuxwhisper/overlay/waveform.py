@@ -20,14 +20,14 @@ class WaveformWidget(Gtk.DrawingArea):
     automatically at ~30fps showing a mirrored waveform fill.
     """
 
-    def __init__(self, history_size: int = 100):
+    def __init__(self, history_size: int = 40):
         super().__init__()
         self._amplitudes: collections.deque[float] = collections.deque(
             maxlen=history_size
         )
         self.set_draw_func(self._draw)
-        self.set_content_width(200)
-        self.set_content_height(60)
+        self.set_hexpand(True)
+        self.set_vexpand(True)
 
         # ~30fps refresh timer
         self._timer_id = GLib.timeout_add(33, self._tick)
@@ -85,7 +85,7 @@ class WaveformWidget(Gtk.DrawingArea):
         # Forward pass: top edge (left to right)
         for i, amp in enumerate(amps):
             x = (i / max(n - 1, 1)) * width
-            bar_h = min(amp * mid_y * 5.0, mid_y - 2)  # Scale and clamp
+            bar_h = min(amp * mid_y * 8.0, mid_y - 1)  # Scale and clamp
             y = mid_y - bar_h
             if i == 0:
                 ctx.move_to(x, y)

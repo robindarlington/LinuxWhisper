@@ -26,6 +26,16 @@ class AudioRecorder:
         self._queue: queue.Queue = queue.Queue()
         self._stream: Optional[sd.InputStream] = None
         self._recording = False
+        self._on_amplitude_callback = None
+
+    def set_amplitude_callback(self, callback) -> None:
+        """Set a callback to receive RMS amplitude for each audio chunk.
+
+        Args:
+            callback: Callable receiving a single float (RMS amplitude).
+                      Must be non-blocking.
+        """
+        self._on_amplitude_callback = callback
 
     def _callback(self, indata, frames, time, status):
         """Audio callback - MUST NOT BLOCK.
@@ -41,6 +51,12 @@ class AudioRecorder:
 
         # CRITICAL: Copy the data because sounddevice reuses the buffer
         self._queue.put(indata.copy())
+
+        if self._on_amplitude_callback is not None:
+            # Compute RMS amplitude — trivial cost on ~1024 samples
+            chunk = indata if indata.ndim == 1 else indata.mean(axis=1)
+            rms = float(np.sqrt(np.mean(chunk ** 2)))
+            self._on_amplitude_callback(rms)
 
     def start(self) -> None:
         """Start audio recording."""

@@ -14,7 +14,7 @@ LinuxWhisper delivers local voice dictation for Linux through seven phases, star
 - [x] **Phase 2: Core Dictation Pipeline** - Hold-to-talk hotkey, audio capture, Whisper transcription, text injection ✓ 2026-02-18
 - [x] **Phase 3: Enhanced Input Modes** - Toggle mode, configurable hotkeys, non-interference validation ✓ 2026-02-18
 - [x] **Phase 4: Transcription Features** - Model selection, daemon memory loading, sentence formatting ✓ 2026-02-18
-- [ ] **Phase 5: Output Refinement** - Display server detection, Unicode support, spacing control
+- [x] **Phase 5: Output Refinement** - Display server detection, Unicode support, spacing control ✓ 2026-02-18
 - [ ] **Phase 6: System Integration** - System tray icon, desktop notifications, systemd service
 - [ ] **Phase 7: Distribution** - AUR package, post-install instructions
 
@@ -94,10 +94,11 @@ Plans:
   3. Unicode characters and special characters render correctly
   4. Consecutive dictations separated by space automatically
   5. Injection works in native Wayland apps (Firefox, Chrome), not just terminals
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 05-01: TBD during planning
+- [x] 05-01-PLAN.md — Multi-backend fallback injector with compositor detection, wtype, clipboard backends, and Unicode support
+- [x] 05-02-PLAN.md — Dictation spacing tracker and pipeline integration
 
 ### Phase 6: System Integration
 **Goal**: LinuxWhisper integrates with system as autostart service with visual feedback
@@ -140,7 +141,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 | 2. Core Dictation Pipeline | 4/4 | ✓ Complete | 2026-02-18 |
 | 3. Enhanced Input Modes | 2/2 | ✓ Complete | 2026-02-18 |
 | 4. Transcription Features | 1/1 | ✓ Complete | 2026-02-18 |
-| 5. Output Refinement | 0/? | Not started | - |
+| 5. Output Refinement | 2/2 | ✓ Complete | 2026-02-18 |
 | 6. System Integration | 0/? | Not started | - |
 | 7. Distribution | 0/? | Not started | - |
 
@@ -151,4 +152,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 *Phase 4 (Audio Optimization) removed: 2026-02-18 — folded into Phase 3, phases renumbered*
 *Phase 3 completed: 2026-02-18*
 *Phase 4 completed: 2026-02-18*
-*Ready for execution: Phase 5*
+*Phase 5 completed: 2026-02-18*
+*Ready for execution: Phase 6*

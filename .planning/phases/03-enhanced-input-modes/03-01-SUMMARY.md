@@ -119,6 +119,10 @@ None - no external service configuration required.
 - All three input-mode requirements (DICT-02, INPUT-02, INPUT-03) completed.
 - Compositor conflict detection provides logging foundation; future phases can surface these warnings via tray/CLI.
 
+## Self-Check: PASSED
+
+All created files verified present. Both task commits (3711c44, dc41950) verified in git history. STATE.md, ROADMAP.md, REQUIREMENTS.md all updated. Metadata commit: 64426da.
+
 ---
 *Phase: 03-enhanced-input-modes*
 *Completed: 2026-02-18*

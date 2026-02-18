@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-14)
 
 **Core value:** Hold a key, speak, text appears in the active window — fast, reliable, and works on any Linux display server.
-**Current focus:** Phase 4 complete (Transcription Features)
+**Current focus:** Phase 5 complete (Output Refinement)
 
 ## Current Position
 
-Phase: 4 of 7 (Transcription Features) - COMPLETE
-Plan: 1 of 1 in current phase
+Phase: 5 of 7 (Output Refinement) - COMPLETE
+Plan: 2 of 2 in current phase
 Status: Phase Complete
-Last activity: 2026-02-18 — Completed plan 04-01 (Model selection, numpy passthrough, sentence formatting, model hot-reload)
+Last activity: 2026-02-18 — Completed plan 05-02 (Dictation spacing tracker)
 
-Progress: [████████░░] 90%
+Progress: [█████████░] 95%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8
-- Average duration: 5 minutes
-- Total execution time: 0.8 hours
+- Total plans completed: 10
+- Average duration: 4 minutes
+- Total execution time: 0.9 hours
 
 **By Phase:**
 
@@ -31,10 +31,11 @@ Progress: [████████░░] 90%
 | 02    | 4     | 30 min | 7.5 min  |
 | 03    | 2     | 5 min  | 2.5 min  |
 | 04    | 1     | 3 min  | 3 min    |
+| 05    | 2     | 5 min  | 2.5 min  |
 
 **Recent Trend:**
-- Last 5 plans: 02-04 (12m), 03-01 (3m), 03-02 (2m), 04-01 (3m)
-- Trend: Phases 3-4 executing cleanly — all plans under 3 minutes, no deviations
+- Last 5 plans: 03-01 (3m), 03-02 (2m), 04-01 (3m), 05-01 (3m), 05-02 (2m)
+- Trend: Phases 3-5 executing cleanly — all plans under 3 minutes
 
 *Updated after each plan completion*
 
@@ -88,6 +89,14 @@ Recent decisions affecting current work:
 - Numpy array passthrough eliminates WAV file I/O overhead in pipeline — 04-01
 - format_sentence() only touches boundaries (capitalize first, add trailing period) — 04-01
 - reload_model() checks IDLE state, unloads + gc.collect + reloads — safe hot-swap — 04-01
+- Multi-backend FallbackInjector replaces single-backend injector — tries backends in order — 05-01
+- wtype primary on wlroots (Hyprland/Sway), clipboard fallback for GNOME/KDE — 05-01
+- Compositor detection via env vars (HYPRLAND_INSTANCE_SIGNATURE, SWAYSOCK, XDG_CURRENT_DESKTOP) + pgrep fallback — 05-01
+- InjectorBackend ABC defines name(), is_available(), type_text(), supports_unicode() interface — 05-01
+- Unicode text routes through Unicode-capable backends first (wtype, clipboard) — 05-01
+- Clipboard save/restore with configurable 300ms delay prevents race condition — 05-01
+- SpacingTracker prepends space between consecutive dictations — 05-02
+- Spacing resets on newlines, cancel, stop, and errors — 05-02
 
 ### Pending Todos
 
@@ -97,7 +106,7 @@ None yet.
 
 **From Research:**
 - PipeWire vs PulseAudio detection — resolved: sounddevice/PortAudio handles this automatically
-- Keyboard layout detection method needs compositor-specific commands (Phase 5)
+- Keyboard layout detection — resolved: wtype handles via libxkbcommon, ydotool uses system layout
 
 **From Phase 2 UAT:**
 - /dev/uinput permissions not auto-applied by udev rule on boot — needs Phase 6/7 fix
@@ -106,9 +115,9 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-18 (execution)
-Stopped at: Completed 04-01-PLAN.md - Model selection, numpy passthrough, sentence formatting, model hot-reload. Phase 4 complete (1/1 plans done).
+Stopped at: Completed 05-02-PLAN.md - Dictation spacing tracker. Phase 5 complete (2/2 plans done).
 Resume file: None
 
 ---
 *State initialized: 2026-02-15*
-*Last updated: 2026-02-18 (04-01 complete — Phase 4 done)*
+*Last updated: 2026-02-18 (05-02 complete — Phase 5 done)*

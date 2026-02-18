@@ -2,7 +2,7 @@
 
 ## Overview
 
-LinuxWhisper delivers local voice dictation for Linux through eight phases, starting with daemon foundation and basic dictation pipeline, then progressively adding modes (toggle), optimizations (VAD, model selection), and production features (system tray, AUR packaging). The architecture validates critical decisions early (evdev hotkeys, ydotool injection, daemon-loaded models) to avoid costly rewrites.
+LinuxWhisper delivers local voice dictation for Linux through seven phases, starting with daemon foundation and basic dictation pipeline, then progressively adding modes (toggle), optimizations (model selection), and production features (system tray, AUR packaging). The architecture validates critical decisions early (evdev hotkeys, ydotool injection, daemon-loaded models) to avoid costly rewrites.
 
 ## Phases
 
@@ -13,11 +13,10 @@ LinuxWhisper delivers local voice dictation for Linux through eight phases, star
 - [x] **Phase 1: Foundation** - Daemon process, config management, project structure ✓ 2026-02-15
 - [x] **Phase 2: Core Dictation Pipeline** - Hold-to-talk hotkey, audio capture, Whisper transcription, text injection ✓ 2026-02-18
 - [ ] **Phase 3: Enhanced Input Modes** - Toggle mode, configurable hotkeys, non-interference validation
-- [ ] **Phase 4: Audio Optimization** - Voice Activity Detection, PipeWire/PulseAudio integration, proper audio format
-- [ ] **Phase 5: Transcription Features** - Model selection, daemon memory loading, sentence formatting
-- [ ] **Phase 6: Output Refinement** - Display server detection, Unicode support, spacing control
-- [ ] **Phase 7: System Integration** - System tray icon, desktop notifications, systemd service
-- [ ] **Phase 8: Distribution** - AUR package, post-install instructions
+- [ ] **Phase 4: Transcription Features** - Model selection, daemon memory loading, sentence formatting
+- [ ] **Phase 5: Output Refinement** - Display server detection, Unicode support, spacing control
+- [ ] **Phase 6: System Integration** - System tray icon, desktop notifications, systemd service
+- [ ] **Phase 7: Distribution** - AUR package, post-install instructions
 
 ## Phase Details
 
@@ -63,28 +62,14 @@ Plans:
   2. User can configure hotkey binding via config file
   3. Configured hotkey does not interfere with compositor bindings (validated at startup)
   4. Mode selection persists across daemon restarts
+  5. Toggle timeout (2 min default) auto-stops recording as safety net for forgotten toggles
 **Plans**: 2 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Toggle mode dispatch, InputMode enum, hotkey validation, compositor conflict detection
-- [ ] 03-02-PLAN.md — State-aware config reload and daemon integration
+- [x] 03-01-PLAN.md — Toggle mode with timeout and escape cancel, InputMode enum, friendly hotkey aliases, compositor conflict detection (Hyprland/Sway/GNOME/KDE/X11)
+- [ ] 03-02-PLAN.md — Updated config defaults (HOME hotkey, toggle_timeout), state-aware config reload, daemon integration
 
-### Phase 4: Audio Optimization
-**Goal**: Audio capture works reliably across audio stacks with automatic silence detection
-**Depends on**: Phase 2
-**Requirements**: AUDIO-01, AUDIO-02, AUDIO-03
-**Success Criteria** (what must be TRUE):
-  1. Audio captured from default microphone via PipeWire on Arch systems
-  2. Audio captured via PulseAudio fallback on non-PipeWire systems
-  3. Recording format is 16kHz mono WAV optimized for Whisper
-  4. Voice Activity Detection auto-stops recording after 2 seconds of silence (toggle mode)
-  5. Audio quality is sufficient for accurate transcription
-**Plans**: TBD
-
-Plans:
-- [ ] 04-01: TBD during planning
-
-### Phase 5: Transcription Features
+### Phase 4: Transcription Features
 **Goal**: User can select Whisper models and get fast, formatted transcriptions
 **Depends on**: Phase 2
 **Requirements**: TRANS-02, TRANS-03, TRANS-04
@@ -97,9 +82,9 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 05-01: TBD during planning
+- [ ] 04-01: TBD during planning
 
-### Phase 6: Output Refinement
+### Phase 5: Output Refinement
 **Goal**: Text injection works universally across display servers with proper formatting
 **Depends on**: Phase 2
 **Requirements**: DICT-04, OUTPUT-02, OUTPUT-03
@@ -112,9 +97,9 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 06-01: TBD during planning
+- [ ] 05-01: TBD during planning
 
-### Phase 7: System Integration
+### Phase 6: System Integration
 **Goal**: LinuxWhisper integrates with system as autostart service with visual feedback
 **Depends on**: Phase 1
 **Requirements**: SYS-02, SYS-03
@@ -127,9 +112,9 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 07-01: TBD during planning
+- [ ] 06-01: TBD during planning
 
-### Phase 8: Distribution
+### Phase 7: Distribution
 **Goal**: LinuxWhisper installable via AUR with complete setup instructions
 **Depends on**: All previous phases
 **Requirements**: PKG-01, PKG-02
@@ -142,26 +127,26 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 08-01: TBD during planning
+- [ ] 07-01: TBD during planning
 
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | ✓ Complete | 2026-02-15 |
 | 2. Core Dictation Pipeline | 4/4 | ✓ Complete | 2026-02-18 |
-| 3. Enhanced Input Modes | 0/2 | Planned | - |
-| 4. Audio Optimization | 0/? | Not started | - |
-| 5. Transcription Features | 0/? | Not started | - |
-| 6. Output Refinement | 0/? | Not started | - |
-| 7. System Integration | 0/? | Not started | - |
-| 8. Distribution | 0/? | Not started | - |
+| 3. Enhanced Input Modes | 1/2 | In Progress | - |
+| 4. Transcription Features | 0/? | Not started | - |
+| 5. Output Refinement | 0/? | Not started | - |
+| 6. System Integration | 0/? | Not started | - |
+| 7. Distribution | 0/? | Not started | - |
 
 ---
 *Roadmap created: 2026-02-15*
 *Phase 1 completed: 2026-02-15*
 *Phase 2 completed: 2026-02-18*
-*Ready for planning: Phase 3*
+*Phase 4 (Audio Optimization) removed: 2026-02-18 — folded into Phase 3, phases renumbered*
+*Ready for execution: Phase 3*

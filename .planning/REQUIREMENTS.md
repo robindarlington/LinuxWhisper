@@ -10,7 +10,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Dictation
 
 - [ ] **DICT-01**: User can hold hotkey to record and release to transcribe (push-to-talk)
-- [ ] **DICT-02**: User can press hotkey to start recording, press again to stop (toggle mode)
+- [x] **DICT-02**: User can press hotkey to start recording, press again to stop (toggle mode)
 - [ ] **DICT-03**: Transcribed text appears in the active window automatically
 - [ ] **DICT-04**: Dictation works on both X11 and Wayland (Hyprland, Sway, GNOME, KDE)
 
@@ -30,8 +30,8 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Input
 
 - [ ] **INPUT-01**: Global hotkey detected via evdev (works on X11 and Wayland)
-- [ ] **INPUT-02**: User can configure hotkey binding (default: F13)
-- [ ] **INPUT-03**: Hotkey does not interfere with compositor or other application bindings
+- [x] **INPUT-02**: User can configure hotkey binding (default: F13)
+- [x] **INPUT-03**: Hotkey does not interfere with compositor or other application bindings
 
 ### Output
 
@@ -93,7 +93,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | DICT-01 | Phase 2 | Pending |
-| DICT-02 | Phase 3 | Pending |
+| DICT-02 | Phase 3 | Complete |
 | DICT-03 | Phase 2 | Pending |
 | DICT-04 | Phase 6 | Pending |
 | AUDIO-01 | Phase 4 | Pending |
@@ -104,8 +104,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | TRANS-03 | Phase 5 | Pending |
 | TRANS-04 | Phase 5 | Pending |
 | INPUT-01 | Phase 2 | Pending |
-| INPUT-02 | Phase 3 | Pending |
-| INPUT-03 | Phase 3 | Pending |
+| INPUT-02 | Phase 3 | Complete |
+| INPUT-03 | Phase 3 | Complete |
 | OUTPUT-01 | Phase 2 | Pending |
 | OUTPUT-02 | Phase 6 | Pending |
 | OUTPUT-03 | Phase 6 | Pending |

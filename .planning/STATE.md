@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-14)
 
 **Core value:** Hold a key, speak, text appears in the active window — fast, reliable, and works on any Linux display server.
-**Current focus:** Phase 2 complete, ready for Phase 3
+**Current focus:** Phase 3 in progress (Enhanced Input Modes)
 
 ## Current Position
 
-Phase: 2 of 8 (Core Dictation Pipeline) - COMPLETE
-Plan: 4 of 4 in current phase
-Status: Complete
-Last activity: 2026-02-18 — Completed plan 02-04 (End-to-End Verification)
+Phase: 3 of 7 (Enhanced Input Modes) - IN PROGRESS
+Plan: 1 of 2 in current phase
+Status: In Progress
+Last activity: 2026-02-18 — Completed plan 03-01 (Toggle Mode + Hotkey Aliases + Compositor Detection)
 
-Progress: [██████░░░░] 75%
+Progress: [███████░░░] 80%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6
+- Total plans completed: 7
 - Average duration: 5 minutes
-- Total execution time: 0.7 hours
+- Total execution time: 0.75 hours
 
 **By Phase:**
 
@@ -29,10 +29,11 @@ Progress: [██████░░░░] 75%
 |-------|-------|-------|----------|
 | 01    | 2     | 6 min  | 3 min    |
 | 02    | 4     | 30 min | 7.5 min  |
+| 03    | 1     | 3 min  | 3 min    |
 
 **Recent Trend:**
-- Last 5 plans: 02-01 (5m), 02-02 (11m), 02-03 (2m), 02-04 (12m)
-- Trend: 02-04 was longer due to interactive debugging and system config fixes
+- Last 5 plans: 02-02 (11m), 02-03 (2m), 02-04 (12m), 03-01 (3m)
+- Trend: 03-01 was fast — clean execution, all checks first run
 
 *Updated after each plan completion*
 
@@ -72,6 +73,11 @@ Recent decisions affecting current work:
 - PAUSE key doesn't support hold-to-talk (instant press+release) — changed default to HOME — 02-04
 - UInput passthrough via UInput.from_device re-injects non-hotkey events — 02-04
 - udev rule for uinput may not apply on boot — manual chmod needed, defer to Phase 7/8 — 02-04
+- Toggle timeout transcribes captured audio (does not discard) — text appearing is the user's feedback — 03-01
+- Escape cancel discards audio without transcribing, only active in toggle mode — 03-01
+- Compositor conflict check is warning-only at startup, never blocks daemon start — 03-01
+- on_escape callback passed to HotkeyDetector only in toggle mode — Escape passes through in hold mode — 03-01
+- validate_config_input called at DictationPipeline.__init__ — invalid config raises ValueError — 03-01
 
 ### Pending Todos
 
@@ -80,19 +86,19 @@ None yet.
 ### Blockers/Concerns
 
 **From Research:**
-- PipeWire vs PulseAudio detection fallback logic unclear (Phase 4)
-- Keyboard layout detection method needs compositor-specific commands (Phase 6)
+- PipeWire vs PulseAudio detection — resolved: sounddevice/PortAudio handles this automatically
+- Keyboard layout detection method needs compositor-specific commands (Phase 5)
 
 **From Phase 2 UAT:**
-- /dev/uinput permissions not auto-applied by udev rule on boot — needs Phase 7/8 fix
-- PAUSE key unsuitable for hold-to-talk — need configurable hotkey docs in Phase 8
+- /dev/uinput permissions not auto-applied by udev rule on boot — needs Phase 6/7 fix
+- PAUSE key unsuitable for hold-to-talk — need configurable hotkey docs in Phase 7
 
 ## Session Continuity
 
-Last session: 2026-02-18 (verification)
-Stopped at: Completed 02-04 - End-to-End Verification. Phase 2 complete.
+Last session: 2026-02-18 (execution)
+Stopped at: Completed 03-01-PLAN.md - Toggle Mode + Hotkey Aliases + Compositor Detection. 1 of 2 Phase 3 plans done.
 Resume file: None
 
 ---
 *State initialized: 2026-02-15*
-*Last updated: 2026-02-18*
+*Last updated: 2026-02-18 (03-01 complete)*

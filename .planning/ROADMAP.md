@@ -159,7 +159,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 3. Enhanced Input Modes | 2/2 | ✓ Complete | 2026-02-18 |
 | 4. Transcription Features | 1/1 | ✓ Complete | 2026-02-18 |
 | 5. Output Refinement | 2/2 | ✓ Complete | 2026-02-18 |
-| 6. Recording Overlay | 2/2 | Complete | 2026-02-18 |
+| 6. Recording Overlay | 2/2 | ✓ Complete | 2026-02-18 |
 | 7. System Integration | 0/? | Not started | - |
 | 8. Distribution | 0/? | Not started | - |
 

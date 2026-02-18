@@ -31,7 +31,7 @@ This is early-stage software. Expect rough edges, missing features, and the occa
 
 ```bash
 # Clone the repo
-git clone https://github.com/yourusername/linuxwhisper.git
+git clone https://github.com/robindarlington/linuxwhisper.git
 cd linuxwhisper
 
 # Create a virtual environment and install

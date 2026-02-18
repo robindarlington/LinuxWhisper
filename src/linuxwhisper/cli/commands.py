@@ -7,6 +7,12 @@ import subprocess
 import sys
 import time
 from linuxwhisper.daemon.pid import read_pid
+from linuxwhisper.service import (
+    install_service, uninstall_service,
+    is_systemd_available, is_service_installed,
+    is_service_enabled, is_service_active,
+    get_service_path,
+)
 
 
 @click.group()
@@ -102,3 +108,66 @@ def status():
         click.echo(f"LinuxWhisper daemon is running (PID {pid})")
     else:
         click.echo("LinuxWhisper daemon is not running")
+
+
+@cli.group()
+def service():
+    """Manage the systemd user service."""
+    pass
+
+
+@service.command()
+def install():
+    """Install the systemd user service file."""
+    if not is_systemd_available():
+        click.echo("systemctl not found. systemd is required for service management.")
+        sys.exit(1)
+    if is_service_installed():
+        click.echo(f"Service file already exists at {get_service_path()}. Overwriting...")
+    try:
+        install_service()
+    except (RuntimeError, subprocess.CalledProcessError) as e:
+        click.echo(f"Failed to install service: {e}")
+        sys.exit(1)
+    click.echo(f"Service file installed to {get_service_path()}")
+    click.echo("")
+    click.echo("To start now and enable on login:")
+    click.echo("  systemctl --user enable --now linuxwhisper")
+    click.echo("")
+    click.echo("To view logs:")
+    click.echo("  journalctl --user -u linuxwhisper -f")
+
+
+@service.command()
+def uninstall():
+    """Uninstall the systemd user service file."""
+    if not is_systemd_available():
+        click.echo("systemctl not found. systemd is required for service management.")
+        sys.exit(1)
+    try:
+        uninstall_service()
+    except FileNotFoundError:
+        click.echo("Service is not installed.")
+        sys.exit(1)
+    except subprocess.CalledProcessError as e:
+        click.echo(f"Failed to uninstall service: {e}")
+        sys.exit(1)
+    click.echo("Service file removed. LinuxWhisper will no longer start on login.")
+
+
+@service.command("status")
+def service_status():
+    """Show systemd service status."""
+    if not is_systemd_available():
+        click.echo("systemd is not available on this system.")
+        return
+    installed = is_service_installed()
+    enabled = is_service_enabled() if installed else False
+    active = is_service_active() if installed else False
+    click.echo(f"Installed: {'yes' if installed else 'no'}")
+    click.echo(f"Enabled:   {'yes' if enabled else 'no'}")
+    click.echo(f"Active:    {'yes' if active else 'no'}")
+    if installed and not enabled:
+        click.echo("\nRun 'systemctl --user enable --now linuxwhisper' to enable.")
+    if not installed:
+        click.echo("\nRun 'linuxwhisper service install' to install the service.")

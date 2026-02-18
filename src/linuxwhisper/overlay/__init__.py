@@ -10,10 +10,38 @@ and renders them as a waveform.
 """
 
 import logging
+import pathlib
 import subprocess
 import sys
 
 logger = logging.getLogger(__name__)
+
+
+def _find_system_python() -> str:
+    """Find system Python that has access to gi/GTK system packages."""
+    if sys.prefix == sys.base_prefix:
+        return sys.executable  # Not in a venv
+    # In a venv — resolve base interpreter (has gi, cairo, etc.)
+    base = pathlib.Path(sys.base_prefix) / "bin" / "python3"
+    if base.exists():
+        return str(base)
+    return sys.executable  # Fallback
+
+
+def _overlay_env() -> dict[str, str]:
+    """Build environment for the overlay subprocess.
+
+    System Python needs PYTHONPATH to find the linuxwhisper package
+    when running from a venv editable install.
+    """
+    import os
+
+    env = os.environ.copy()
+    # Find the src/ directory containing the linuxwhisper package
+    pkg_dir = pathlib.Path(__file__).resolve().parent.parent.parent  # src/
+    existing = env.get("PYTHONPATH", "")
+    env["PYTHONPATH"] = f"{pkg_dir}:{existing}" if existing else str(pkg_dir)
+    return env
 
 __all__ = ["OverlayManager"]
 
@@ -42,10 +70,11 @@ class OverlayManager:
 
         try:
             self._process = subprocess.Popen(
-                [sys.executable, "-m", "linuxwhisper.overlay"],
+                [_find_system_python(), "-m", "linuxwhisper.overlay"],
                 stdin=subprocess.PIPE,
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
+                env=_overlay_env(),
             )
             logger.info("Overlay subprocess started (pid=%d)", self._process.pid)
         except OSError:

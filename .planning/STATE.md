@@ -5,34 +5,34 @@
 See: .planning/PROJECT.md (updated 2026-02-14)
 
 **Core value:** Hold a key, speak, text appears in the active window — fast, reliable, and works on any Linux display server.
-**Current focus:** Phase 2 - Core Dictation Pipeline
+**Current focus:** Phase 2 complete, ready for Phase 3
 
 ## Current Position
 
-Phase: 2 of 8 (Core Dictation Pipeline)
+Phase: 2 of 8 (Core Dictation Pipeline) - COMPLETE
 Plan: 4 of 4 in current phase
-Status: In progress
-Last activity: 2026-02-15 — Completed plan 02-03 (Pipeline Coordinator and State Machine)
+Status: Complete
+Last activity: 2026-02-18 — Completed plan 02-04 (End-to-End Verification)
 
-Progress: [█████░░░░░] 62.5%
+Progress: [██████░░░░] 75%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
-- Average duration: 4 minutes
-- Total execution time: 0.3 hours
+- Total plans completed: 6
+- Average duration: 5 minutes
+- Total execution time: 0.7 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01    | 2     | 6 min  | 3 min    |
-| 02    | 3     | 18 min | 6 min    |
+| 02    | 4     | 30 min | 7.5 min  |
 
 **Recent Trend:**
-- Last 5 plans: 01-02 (3m), 02-01 (5m), 02-02 (11m), 02-03 (2m)
-- Trend: 02-03 was faster due to well-defined integration task
+- Last 5 plans: 02-01 (5m), 02-02 (11m), 02-03 (2m), 02-04 (12m)
+- Trend: 02-04 was longer due to interactive debugging and system config fixes
 
 *Updated after each plan completion*
 
@@ -69,6 +69,9 @@ Recent decisions affecting current work:
 - Permission check at daemon startup prevents cryptic evdev errors — 02-03
 - Pre-load Whisper model on pipeline start for fast first dictation — 02-03
 - Config reload requires daemon restart for hotkey/model changes (acceptable for Phase 2) — 02-03
+- PAUSE key doesn't support hold-to-talk (instant press+release) — changed default to HOME — 02-04
+- UInput passthrough via UInput.from_device re-injects non-hotkey events — 02-04
+- udev rule for uinput may not apply on boot — manual chmod needed, defer to Phase 7/8 — 02-04
 
 ### Pending Todos
 
@@ -77,17 +80,19 @@ None yet.
 ### Blockers/Concerns
 
 **From Research:**
-- evdev device selection algorithm needs hands-on testing (Phase 2)
-- ydotool daemon setup steps need documentation (Phase 2)
 - PipeWire vs PulseAudio detection fallback logic unclear (Phase 4)
 - Keyboard layout detection method needs compositor-specific commands (Phase 6)
 
+**From Phase 2 UAT:**
+- /dev/uinput permissions not auto-applied by udev rule on boot — needs Phase 7/8 fix
+- PAUSE key unsuitable for hold-to-talk — need configurable hotkey docs in Phase 8
+
 ## Session Continuity
 
-Last session: 2026-02-15 (plan execution)
-Stopped at: Completed 02-03-PLAN.md - Pipeline Coordinator and State Machine
+Last session: 2026-02-18 (verification)
+Stopped at: Completed 02-04 - End-to-End Verification. Phase 2 complete.
 Resume file: None
 
 ---
 *State initialized: 2026-02-15*
-*Last updated: 2026-02-15*
+*Last updated: 2026-02-18*

@@ -11,7 +11,7 @@ LinuxWhisper delivers local voice dictation for Linux through eight phases, star
 - Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
 
 - [x] **Phase 1: Foundation** - Daemon process, config management, project structure ✓ 2026-02-15
-- [ ] **Phase 2: Core Dictation Pipeline** - Hold-to-talk hotkey, audio capture, Whisper transcription, text injection
+- [x] **Phase 2: Core Dictation Pipeline** - Hold-to-talk hotkey, audio capture, Whisper transcription, text injection ✓ 2026-02-18
 - [ ] **Phase 3: Enhanced Input Modes** - Toggle mode, configurable hotkeys, non-interference validation
 - [ ] **Phase 4: Audio Optimization** - Voice Activity Detection, PipeWire/PulseAudio integration, proper audio format
 - [ ] **Phase 5: Transcription Features** - Model selection, daemon memory loading, sentence formatting
@@ -49,10 +49,10 @@ Plans:
 **Plans**: 4 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Hotkey detection (evdev) and audio recording (sounddevice)
-- [ ] 02-02-PLAN.md — Transcription engine (faster-whisper) and text injection (ydotool/xdotool)
-- [ ] 02-03-PLAN.md — Pipeline state machine coordinator and daemon integration
-- [ ] 02-04-PLAN.md — End-to-end verification checkpoint
+- [x] 02-01-PLAN.md — Hotkey detection (evdev) and audio recording (sounddevice)
+- [x] 02-02-PLAN.md — Transcription engine (faster-whisper) and text injection (ydotool/xdotool)
+- [x] 02-03-PLAN.md — Pipeline state machine coordinator and daemon integration
+- [x] 02-04-PLAN.md — End-to-end verification checkpoint
 
 ### Phase 3: Enhanced Input Modes
 **Goal**: User can choose between hold-to-talk and toggle modes with custom hotkeys
@@ -152,7 +152,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | ✓ Complete | 2026-02-15 |
-| 2. Core Dictation Pipeline | 0/4 | Planned | - |
+| 2. Core Dictation Pipeline | 4/4 | ✓ Complete | 2026-02-18 |
 | 3. Enhanced Input Modes | 0/2 | Planned | - |
 | 4. Audio Optimization | 0/? | Not started | - |
 | 5. Transcription Features | 0/? | Not started | - |
@@ -163,4 +163,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 ---
 *Roadmap created: 2026-02-15*
 *Phase 1 completed: 2026-02-15*
-*Ready for planning: Phase 2*
+*Phase 2 completed: 2026-02-18*
+*Ready for planning: Phase 3*

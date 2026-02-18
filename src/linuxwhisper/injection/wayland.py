@@ -28,7 +28,7 @@ class WaylandInjector:
         if not socket_exists:
             raise RuntimeError(
                 "ydotoold daemon not running. "
-                "Start with: systemctl --user start ydotoold"
+                "Start with: systemctl --user start ydotool"
             )
 
         logger.info("WaylandInjector initialized")

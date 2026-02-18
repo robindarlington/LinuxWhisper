@@ -90,7 +90,7 @@ class DictationPipeline:
             audio_data = self._recorder.stop()
 
             # Check if recording is too short
-            min_samples = int(self._recorder._sample_rate * 0.1)  # 0.1 seconds
+            min_samples = int(self._recorder.sample_rate * 0.1)  # 0.1 seconds
             if audio_data is None or len(audio_data) < min_samples:
                 logger.info("Recording too short, discarding")
                 self._transition(PipelineState.IDLE)

@@ -3,7 +3,7 @@ import logging
 from typing import Callable
 
 import evdev
-from evdev import InputDevice, ecodes
+from evdev import InputDevice, UInput, ecodes
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +36,8 @@ class HotkeyDetector:
         Raises:
             ValueError: If keycode not found
         """
-        # Ensure KEY_ prefix
+        # Normalize to uppercase and ensure KEY_ prefix
+        hotkey_name = hotkey_name.upper()
         if not hotkey_name.startswith("KEY_"):
             hotkey_name = f"KEY_{hotkey_name}"
 
@@ -68,7 +69,7 @@ class HotkeyDetector:
 
                 # Skip non-keyboard devices (power buttons, etc.)
                 name_lower = device.name.lower()
-                skip_keywords = ['power', 'sleep', 'lid', 'video', 'consumer']
+                skip_keywords = ['power', 'sleep', 'lid', 'video', 'consumer', 'mouse', 'trackpad', 'touchpad']
                 if any(kw in name_lower for kw in skip_keywords):
                     continue
 
@@ -76,8 +77,15 @@ class HotkeyDetector:
                 if not device.phys:
                     continue
 
-                # Prefer USB keyboards
+                # Score based on how likely this is a real keyboard
                 score = 0
+                key_caps = caps.get(ecodes.EV_KEY, [])
+                # Real keyboards support alphabetic keys
+                has_alpha = any(ecodes.KEY_A <= k <= ecodes.KEY_Z for k in key_caps)
+                if has_alpha:
+                    score += 10
+                if 'keyboard' in name_lower:
+                    score += 5
                 if 'usb' in device.phys.lower():
                     score += 2
                 if 'input' in device.phys.lower():
@@ -111,8 +119,11 @@ class HotkeyDetector:
             on_release: Callback for key release (value=0)
         """
         self.device = InputDevice(self.device_path)
-        self.device.grab()  # Exclusively grab device to prevent propagation
+        self.device.grab()  # Grab device to intercept hotkey
         self._running = True
+
+        # Create virtual device to re-inject non-hotkey events
+        self._uinput = UInput.from_device(self.device, name="LinuxWhisper passthrough")
 
         logger.info(f"Monitoring hotkey {self.hotkey_name} on {self.device.name}")
 
@@ -121,15 +132,21 @@ class HotkeyDetector:
                 if not self._running:
                     break
 
-                # Only care about key events for our specific key
+                # Intercept only our hotkey — pass everything else through
                 if event.type == ecodes.EV_KEY and event.code == self.keycode:
                     if event.value == 1:  # Key down
                         on_press()
                     elif event.value == 0:  # Key up
                         on_release()
                     # value == 2 is key repeat, ignore it
+                else:
+                    # Re-inject all other events so keyboard works normally
+                    self._uinput.write_event(event)
 
         finally:
+            if self._uinput:
+                self._uinput.close()
+                self._uinput = None
             if self.device:
                 try:
                     self.device.ungrab()

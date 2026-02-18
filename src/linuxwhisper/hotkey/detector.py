@@ -31,6 +31,7 @@ class HotkeyDetector:
         self.device_path = device_path if device_path else self._find_keyboard()
         self.device: InputDevice | None = None
         self._running = False
+        self._key_pressed = False  # Track key state for missed press events
 
     def _resolve_keycode(self, hotkey_name: str) -> int:
         """Convert hotkey name to evdev keycode.
@@ -151,10 +152,16 @@ class HotkeyDetector:
                 # Intercept our hotkey — swallow it, invoke callbacks
                 if event.type == ecodes.EV_KEY and event.code == self.keycode:
                     if event.value == 1:  # Key down
+                        self._key_pressed = True
                         on_press()
                     elif event.value == 0:  # Key up
+                        self._key_pressed = False
                         on_release()
-                    # value == 2 is key repeat, ignore it
+                    elif event.value == 2 and not self._key_pressed:
+                        # First repeat without seeing initial press (grab race condition)
+                        self._key_pressed = True
+                        logger.debug("Hotkey repeat treated as press (missed initial press event)")
+                        on_press()
 
                 # Intercept Escape only when on_escape callback is registered
                 elif (

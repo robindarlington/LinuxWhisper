@@ -135,6 +135,7 @@ def reload_config_safe() -> dict | None:
     hotkey_changed = _current_config.get("hotkey") != new_config.get("hotkey")
     mode_changed = _current_config.get("mode") != new_config.get("mode")
     timeout_changed = _current_config.get("toggle_timeout") != new_config.get("toggle_timeout")
+    model_changed = _current_config.get("model") != new_config.get("model")
 
     # Log hotkey change and check compositor conflicts
     if hotkey_changed:
@@ -154,6 +155,11 @@ def reload_config_safe() -> dict | None:
             f"-> {new_config.get('toggle_timeout')}"
         )
 
+    if model_changed:
+        logger.info(
+            f"Model changed: {_current_config.get('model')} -> {new_config.get('model')}"
+        )
+
     # Update logging level if changed
     old_level = _current_config.get("logging", {}).get("level", "INFO") if _current_config else "INFO"
     new_level = new_config.get("logging", {}).get("level", "INFO")
@@ -165,11 +171,14 @@ def reload_config_safe() -> dict | None:
     _current_config = new_config
 
     # Update pipeline if running and any relevant config changed
-    if _pipeline_ref is not None and any([hotkey_changed, mode_changed, timeout_changed]):
+    if _pipeline_ref is not None and any([hotkey_changed, mode_changed, timeout_changed, model_changed]):
         _pipeline_ref.update_config(new_config)
         if hotkey_changed:
             logger.info("Restarting hotkey detector for new key...")
             _pipeline_ref.restart_hotkey_detector()
+        if model_changed:
+            logger.info("Reloading Whisper model for new model size...")
+            _pipeline_ref.reload_model(new_config.get("model", "base.en"))
 
     logger.info("Configuration reloaded successfully")
     return new_config

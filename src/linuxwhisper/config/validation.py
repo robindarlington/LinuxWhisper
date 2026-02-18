@@ -247,6 +247,14 @@ def check_compositor_conflicts(hotkey_str: str) -> list[str]:
         return []
 
 
+VALID_MODEL_SIZES = {
+    "tiny", "tiny.en",
+    "base", "base.en",
+    "small", "small.en",
+    "medium", "medium.en",
+}
+
+
 def validate_config_input(config: dict) -> list[str]:
     """Validate input-related config fields.
 
@@ -276,5 +284,13 @@ def validate_config_input(config: dict) -> list[str]:
             errors.append(
                 f"Invalid toggle_timeout: must be a positive number (got {timeout})"
             )
+
+    # Validate model
+    model = config.get("model", "base.en")
+    if model not in VALID_MODEL_SIZES:
+        errors.append(
+            f"Invalid model: '{model}'. "
+            f"Valid models: {', '.join(sorted(VALID_MODEL_SIZES))}"
+        )
 
     return errors

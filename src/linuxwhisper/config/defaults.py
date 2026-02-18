@@ -12,6 +12,7 @@ DEFAULT_CONFIG = {
     # Only applies to toggle mode. Set to 0 to disable.
     "toggle_timeout": 120,
     "model": "base.en",
+    "sentence_format": True,
     "audio": {
         "sample_rate": 16000,
         "channels": 1,

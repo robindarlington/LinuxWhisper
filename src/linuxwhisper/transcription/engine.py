@@ -1,7 +1,9 @@
 """Transcription engine using faster-whisper with INT8 quantization."""
 
 import logging
-from typing import Optional
+from typing import Optional, Union
+
+import numpy as np
 
 from faster_whisper import WhisperModel
 
@@ -47,11 +49,11 @@ class TranscriptionEngine:
         )
         logger.info(f"Whisper model '{self.model_size}' loaded successfully")
 
-    def transcribe(self, audio_path: str, language: Optional[str] = None) -> str:
-        """Transcribe audio file to text.
+    def transcribe(self, audio: Union[str, np.ndarray], language: Optional[str] = None) -> str:
+        """Transcribe audio file or numpy array to text.
 
         Args:
-            audio_path: Path to WAV file (16kHz mono recommended)
+            audio: Path to audio file OR numpy float32 array at 16kHz
             language: Language code (e.g. 'en') or None for auto-detection
 
         Returns:
@@ -61,9 +63,13 @@ class TranscriptionEngine:
         if self._model is None:
             self.load_model()
 
+        # Squeeze channel dimension for mono audio from AudioRecorder (N,1) -> (N,)
+        if isinstance(audio, np.ndarray) and audio.ndim > 1:
+            audio = audio.squeeze()
+
         # Transcribe with VAD filtering for better results
         segments, info = self._model.transcribe(
-            audio_path,
+            audio,
             language=language,
             beam_size=5,
             vad_filter=True,

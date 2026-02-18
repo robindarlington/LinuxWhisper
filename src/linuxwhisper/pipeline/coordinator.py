@@ -1,13 +1,14 @@
 """Pipeline coordinator that orchestrates the dictation workflow."""
 
+import gc
 import logging
-import os
 import threading
 
 from linuxwhisper.audio import AudioRecorder
 from linuxwhisper.hotkey import HotkeyDetector, check_input_permissions, get_permission_instructions
 from linuxwhisper.injection import create_injector
 from linuxwhisper.transcription import TranscriptionEngine
+from linuxwhisper.transcription.formatting import format_sentence
 from linuxwhisper.input.modes import InputMode, get_mode_from_config, DEFAULT_TOGGLE_TIMEOUT
 from linuxwhisper.config.validation import validate_hotkey, check_compositor_conflicts, validate_config_input
 from .states import PipelineState, VALID_TRANSITIONS
@@ -121,24 +122,18 @@ class DictationPipeline:
                 self._transition(PipelineState.IDLE)
                 return
 
-            # Save as temporary WAV file
-            wav_path = self._recorder.save_wav(audio_data)
-            logger.debug(f"Audio saved to {wav_path}")
-
-            # Transcribe audio
-            text = self._engine.transcribe(wav_path)
-
-            # Clean up temporary file
-            try:
-                os.unlink(wav_path)
-            except OSError as e:
-                logger.warning(f"Failed to delete temp WAV file {wav_path}: {e}")
+            # Transcribe audio directly from numpy array
+            text = self._engine.transcribe(audio_data)
 
             # Check if transcription is empty
             if not text or not text.strip():
                 logger.info("Empty transcription, skipping injection")
                 self._transition(PipelineState.IDLE)
                 return
+
+            # Apply sentence formatting if enabled
+            if self._config.get("sentence_format", True):
+                text = format_sentence(text)
 
             # Inject transcribed text
             self._transition(PipelineState.INJECTING)
@@ -369,3 +364,30 @@ class DictationPipeline:
         )
         self._hotkey_thread.start()
         logger.info(f"Hotkey detector restarted with key={hotkey}")
+
+    def reload_model(self, new_model_size: str) -> None:
+        """Replace the transcription engine with a new model size.
+
+        Only call when pipeline state is IDLE. Unloads the current model,
+        frees memory, creates a new engine, and loads the new model.
+
+        Args:
+            new_model_size: Whisper model size string (e.g., "small.en").
+        """
+        if self._state != PipelineState.IDLE:
+            logger.warning(
+                f"Cannot reload model: pipeline not idle (state={self._state.name})"
+            )
+            return
+
+        old_model = self._engine.model_size
+        logger.info(f"Reloading Whisper model: {old_model} -> {new_model_size}")
+
+        # Unload current model and free native CTranslate2 memory
+        self._engine.unload_model()
+        gc.collect()
+
+        # Create new engine and load model
+        self._engine = TranscriptionEngine(model_size=new_model_size)
+        self._engine.load_model()
+        logger.info(f"Whisper model reloaded: {new_model_size}")

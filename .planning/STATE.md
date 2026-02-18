@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-14)
 
 **Core value:** Hold a key, speak, text appears in the active window — fast, reliable, and works on any Linux display server.
-**Current focus:** Phase 6 complete (Recording Overlay)
+**Current focus:** Phase 7 complete (System Integration)
 
 ## Current Position
 
-Phase: 6 of 7 (Recording Overlay) - COMPLETE
+Phase: 7 of 8 (System Integration) - COMPLETE
 Plan: 2 of 2 in current phase
-Status: Plan 06-02 complete -- Phase 6 done
-Last activity: 2026-02-18 — Completed plan 06-02 (Pipeline overlay integration)
+Status: Plan 07-02 complete -- Phase 7 done
+Last activity: 2026-02-18 — Completed plan 07-02 (CLI systemd delegation)
 
 Progress: [██████████] 100%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 12
+- Total plans completed: 14
 - Average duration: 4 minutes
-- Total execution time: 1.0 hours
+- Total execution time: 1.1 hours
 
 **By Phase:**
 
@@ -33,10 +33,11 @@ Progress: [██████████] 100%
 | 04    | 1     | 3 min  | 3 min    |
 | 05    | 2     | 5 min  | 2.5 min  |
 | 06    | 2     | 5 min  | 2.5 min  |
+| 07    | 2     | 5 min  | 2.5 min  |
 
 **Recent Trend:**
-- Last 5 plans: 04-01 (3m), 05-01 (3m), 05-02 (2m), 06-01 (3m), 06-02 (2m)
-- Trend: Phases 3-6 executing cleanly — all plans under 3 minutes
+- Last 5 plans: 05-02 (2m), 06-01 (3m), 06-02 (2m), 07-01 (3m), 07-02 (2m)
+- Trend: Phases 3-7 executing cleanly — all plans under 3 minutes
 
 *Updated after each plan completion*
 
@@ -104,6 +105,11 @@ Recent decisions affecting current work:
 - Amplitude callback in audio _callback (not separate thread) — trivial RMS on ~1024 samples — 06-02
 - Overlay lifecycle in coordinator, not daemon — single ownership, clean state machine integration — 06-02
 - No daemon/main.py changes needed — pipeline.stop() already chains to overlay.hide() — 06-02
+- systemd service file installed to ~/.config/systemd/user/ (user-local, not system-wide) — 07-01
+- Service template uses sys.executable for venv-aware ExecStart path — 07-01
+- StartLimitIntervalSec/StartLimitBurst in [Unit] section (not [Service]) — 07-01
+- CLI delegates to systemctl when service is enabled, preserves manual Popen mode otherwise — 07-02
+- All systemd-managed messages include "(systemd-managed)" label for clarity — 07-02
 
 ### Pending Todos
 
@@ -122,9 +128,9 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-18 (execution)
-Stopped at: Completed 06-02-PLAN.md - Pipeline overlay integration. Phase 6 complete (2/2 plans).
+Stopped at: Completed 07-02-PLAN.md - CLI systemd delegation. Phase 7 complete (2/2 plans).
 Resume file: None
 
 ---
 *State initialized: 2026-02-15*
-*Last updated: 2026-02-18 (06-02 complete)*
+*Last updated: 2026-02-18 (07-02 complete)*

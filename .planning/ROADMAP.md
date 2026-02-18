@@ -16,7 +16,7 @@ LinuxWhisper delivers local voice dictation for Linux through eight phases, star
 - [x] **Phase 4: Transcription Features** - Model selection, daemon memory loading, sentence formatting ✓ 2026-02-18
 - [x] **Phase 5: Output Refinement** - Display server detection, Unicode support, spacing control ✓ 2026-02-18
 - [x] **Phase 6: Recording Overlay** - Live waveform widget during recording, layer-shell positioning ✓ 2026-02-18
-- [ ] **Phase 7: System Integration** - systemd user service, auto-start, crash recovery
+- [x] **Phase 7: System Integration** - systemd user service, auto-start, crash recovery ✓ 2026-02-18
 - [ ] **Phase 8: Distribution** - AUR package, post-install instructions
 
 ## Phase Details
@@ -127,10 +127,11 @@ Plans:
   2. Service automatically restarts on crash
   3. Service stops cleanly on logout without orphaned processes
   4. Service file installed to correct systemd user unit path
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 07-01: TBD during planning
+- [x] 07-01-PLAN.md — Service file template, systemd helpers, `linuxwhisper service install|uninstall|status` CLI subcommands
+- [x] 07-02-PLAN.md — CLI systemd delegation: modify start/stop/reload/status to delegate to systemctl when service is enabled
 
 ### Phase 8: Distribution
 **Goal**: LinuxWhisper installable via AUR with complete setup instructions
@@ -160,7 +161,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 4. Transcription Features | 1/1 | ✓ Complete | 2026-02-18 |
 | 5. Output Refinement | 2/2 | ✓ Complete | 2026-02-18 |
 | 6. Recording Overlay | 2/2 | ✓ Complete | 2026-02-18 |
-| 7. System Integration | 0/? | Not started | - |
+| 7. System Integration | 2/2 | ✓ Complete | 2026-02-18 |
 | 8. Distribution | 0/? | Not started | - |
 
 ---
@@ -174,3 +175,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 *Phases 6-7 restructured: 2026-02-18 — Recording Overlay added as Phase 6, old Phase 6 (System Integration) slimmed and moved to Phase 7, Distribution moved to Phase 8*
 *Phase 6 planned: 2026-02-18 — 2 plans, 2 waves*
 *Phase 6 completed: 2026-02-18*
+*Phase 7 planned: 2026-02-18 — 2 plans, 2 waves*
+*Phase 7 completed: 2026-02-18*

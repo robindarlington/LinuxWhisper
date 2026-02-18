@@ -11,15 +11,23 @@ logger = logging.getLogger(__name__)
 class HotkeyDetector:
     """Detects and monitors hotkey press/release events using evdev."""
 
-    def __init__(self, hotkey: str = "KEY_F13", device_path: str | None = None):
+    def __init__(
+        self,
+        hotkey: str = "KEY_F13",
+        device_path: str | None = None,
+        escape_keycode: int | None = None,
+    ):
         """Initialize hotkey detector.
 
         Args:
             hotkey: Key name (e.g., "KEY_F13" or "F13")
             device_path: Optional specific device path. If None, auto-detect.
+            escape_keycode: Keycode for the Escape key. Defaults to ecodes.KEY_ESC.
+                Only used when on_escape callback is passed to start().
         """
         self.hotkey_name = hotkey
         self.keycode = self._resolve_keycode(hotkey)
+        self.escape_keycode = escape_keycode if escape_keycode is not None else ecodes.KEY_ESC
         self.device_path = device_path if device_path else self._find_keyboard()
         self.device: InputDevice | None = None
         self._running = False
@@ -109,7 +117,12 @@ class HotkeyDetector:
         logger.info(f"Selected keyboard: {candidates[0][1]} at {best_path}")
         return best_path
 
-    def start(self, on_press: Callable[[], None], on_release: Callable[[], None]) -> None:
+    def start(
+        self,
+        on_press: Callable[[], None],
+        on_release: Callable[[], None],
+        on_escape: Callable[[], None] | None = None,
+    ) -> None:
         """Start monitoring hotkey events.
 
         This method blocks until stop() is called.
@@ -117,6 +130,9 @@ class HotkeyDetector:
         Args:
             on_press: Callback for key press (value=1)
             on_release: Callback for key release (value=0)
+            on_escape: Optional callback for Escape key press. When provided,
+                Escape events are intercepted (swallowed) and on_escape is called.
+                When None, Escape events pass through to the system normally.
         """
         self.device = InputDevice(self.device_path)
         self.device.grab()  # Grab device to intercept hotkey
@@ -132,13 +148,23 @@ class HotkeyDetector:
                 if not self._running:
                     break
 
-                # Intercept only our hotkey — pass everything else through
+                # Intercept our hotkey — swallow it, invoke callbacks
                 if event.type == ecodes.EV_KEY and event.code == self.keycode:
                     if event.value == 1:  # Key down
                         on_press()
                     elif event.value == 0:  # Key up
                         on_release()
                     # value == 2 is key repeat, ignore it
+
+                # Intercept Escape only when on_escape callback is registered
+                elif (
+                    on_escape is not None
+                    and event.type == ecodes.EV_KEY
+                    and event.code == self.escape_keycode
+                    and event.value == 1  # Key down only
+                ):
+                    on_escape()
+
                 else:
                     # Re-inject all other events so keyboard works normally
                     self._uinput.write_event(event)

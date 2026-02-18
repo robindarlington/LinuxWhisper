@@ -13,7 +13,7 @@ LinuxWhisper delivers local voice dictation for Linux through seven phases, star
 - [x] **Phase 1: Foundation** - Daemon process, config management, project structure ✓ 2026-02-15
 - [x] **Phase 2: Core Dictation Pipeline** - Hold-to-talk hotkey, audio capture, Whisper transcription, text injection ✓ 2026-02-18
 - [x] **Phase 3: Enhanced Input Modes** - Toggle mode, configurable hotkeys, non-interference validation ✓ 2026-02-18
-- [ ] **Phase 4: Transcription Features** - Model selection, daemon memory loading, sentence formatting
+- [x] **Phase 4: Transcription Features** - Model selection, daemon memory loading, sentence formatting ✓ 2026-02-18
 - [ ] **Phase 5: Output Refinement** - Display server detection, Unicode support, spacing control
 - [ ] **Phase 6: System Integration** - System tray icon, desktop notifications, systemd service
 - [ ] **Phase 7: Distribution** - AUR package, post-install instructions
@@ -82,7 +82,7 @@ Plans:
 **Plans**: 1 plan
 
 Plans:
-- [ ] 04-01-PLAN.md — Config model validation, numpy passthrough, sentence formatting, model hot-reload via SIGHUP
+- [x] 04-01-PLAN.md — Config model validation, numpy passthrough, sentence formatting, model hot-reload via SIGHUP
 
 ### Phase 5: Output Refinement
 **Goal**: Text injection works universally across display servers with proper formatting
@@ -139,7 +139,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 | 1. Foundation | 2/2 | ✓ Complete | 2026-02-15 |
 | 2. Core Dictation Pipeline | 4/4 | ✓ Complete | 2026-02-18 |
 | 3. Enhanced Input Modes | 2/2 | ✓ Complete | 2026-02-18 |
-| 4. Transcription Features | 0/1 | Planned | - |
+| 4. Transcription Features | 1/1 | ✓ Complete | 2026-02-18 |
 | 5. Output Refinement | 0/? | Not started | - |
 | 6. System Integration | 0/? | Not started | - |
 | 7. Distribution | 0/? | Not started | - |
@@ -150,4 +150,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 *Phase 2 completed: 2026-02-18*
 *Phase 4 (Audio Optimization) removed: 2026-02-18 — folded into Phase 3, phases renumbered*
 *Phase 3 completed: 2026-02-18*
-*Ready for execution: Phase 4*
+*Phase 4 completed: 2026-02-18*
+*Ready for execution: Phase 5*

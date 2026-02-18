@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-14)
 
 **Core value:** Hold a key, speak, text appears in the active window — fast, reliable, and works on any Linux display server.
-**Current focus:** Phase 3 in progress (Enhanced Input Modes)
+**Current focus:** Phase 4 complete (Transcription Features)
 
 ## Current Position
 
-Phase: 3 of 7 (Enhanced Input Modes) - COMPLETE
-Plan: 2 of 2 in current phase
+Phase: 4 of 7 (Transcription Features) - COMPLETE
+Plan: 1 of 1 in current phase
 Status: Phase Complete
-Last activity: 2026-02-18 — Completed plan 03-02 (Config Defaults, Validation Wiring, State-Aware Reload)
+Last activity: 2026-02-18 — Completed plan 04-01 (Model selection, numpy passthrough, sentence formatting, model hot-reload)
 
-Progress: [████████░░] 85%
+Progress: [████████░░] 90%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7
+- Total plans completed: 8
 - Average duration: 5 minutes
-- Total execution time: 0.75 hours
+- Total execution time: 0.8 hours
 
 **By Phase:**
 
@@ -30,10 +30,11 @@ Progress: [████████░░] 85%
 | 01    | 2     | 6 min  | 3 min    |
 | 02    | 4     | 30 min | 7.5 min  |
 | 03    | 2     | 5 min  | 2.5 min  |
+| 04    | 1     | 3 min  | 3 min    |
 
 **Recent Trend:**
-- Last 5 plans: 02-03 (2m), 02-04 (12m), 03-01 (3m), 03-02 (2m)
-- Trend: Phase 3 executed cleanly — both plans under 3 minutes, no deviations
+- Last 5 plans: 02-04 (12m), 03-01 (3m), 03-02 (2m), 04-01 (3m)
+- Trend: Phases 3-4 executing cleanly — all plans under 3 minutes, no deviations
 
 *Updated after each plan completion*
 
@@ -83,6 +84,10 @@ Recent decisions affecting current work:
 - Compositor conflict check is warning-only at startup, never blocks daemon start — 03-01
 - on_escape callback passed to HotkeyDetector only in toggle mode — Escape passes through in hold mode — 03-01
 - validate_config_input called at DictationPipeline.__init__ — invalid config raises ValueError — 03-01
+- VALID_MODEL_SIZES restricts to tiny/base/small/medium (.en variants) — no large models — 04-01
+- Numpy array passthrough eliminates WAV file I/O overhead in pipeline — 04-01
+- format_sentence() only touches boundaries (capitalize first, add trailing period) — 04-01
+- reload_model() checks IDLE state, unloads + gc.collect + reloads — safe hot-swap — 04-01
 
 ### Pending Todos
 
@@ -101,9 +106,9 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-18 (execution)
-Stopped at: Completed 03-02-PLAN.md - Config Defaults, Validation Wiring, and State-Aware Reload. Phase 3 complete (2/2 plans done).
+Stopped at: Completed 04-01-PLAN.md - Model selection, numpy passthrough, sentence formatting, model hot-reload. Phase 4 complete (1/1 plans done).
 Resume file: None
 
 ---
 *State initialized: 2026-02-15*
-*Last updated: 2026-02-18 (03-02 complete — Phase 3 done)*
+*Last updated: 2026-02-18 (04-01 complete — Phase 4 done)*

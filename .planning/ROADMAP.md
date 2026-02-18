@@ -115,7 +115,7 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 06-01-PLAN.md — Overlay subprocess module: OverlayManager API, GTK4 window with layer-shell, Cairo waveform widget, stdin pipe reader
+- [x] 06-01-PLAN.md — Overlay subprocess module: OverlayManager API, GTK4 window with layer-shell, Cairo waveform widget, stdin pipe reader
 - [ ] 06-02-PLAN.md — Pipeline integration: amplitude callback on AudioRecorder, overlay show/hide in coordinator state machine, overlay config defaults
 
 ### Phase 7: System Integration
@@ -159,7 +159,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 3. Enhanced Input Modes | 2/2 | ✓ Complete | 2026-02-18 |
 | 4. Transcription Features | 1/1 | ✓ Complete | 2026-02-18 |
 | 5. Output Refinement | 2/2 | ✓ Complete | 2026-02-18 |
-| 6. Recording Overlay | 0/2 | Not started | - |
+| 6. Recording Overlay | 1/2 | In progress | - |
 | 7. System Integration | 0/? | Not started | - |
 | 8. Distribution | 0/? | Not started | - |
 

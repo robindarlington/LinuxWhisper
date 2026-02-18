@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-14)
 
 **Core value:** Hold a key, speak, text appears in the active window — fast, reliable, and works on any Linux display server.
-**Current focus:** Phase 5 complete (Output Refinement)
+**Current focus:** Phase 6 in progress (Recording Overlay)
 
 ## Current Position
 
-Phase: 5 of 7 (Output Refinement) - COMPLETE
-Plan: 2 of 2 in current phase
-Status: Phase Complete
-Last activity: 2026-02-18 — Completed plan 05-02 (Dictation spacing tracker)
+Phase: 6 of 7 (Recording Overlay) - IN PROGRESS
+Plan: 1 of 1 in current phase
+Status: Plan 06-01 complete
+Last activity: 2026-02-18 — Completed plan 06-01 (Overlay module)
 
-Progress: [█████████░] 95%
+Progress: [█████████░] 97%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 10
+- Total plans completed: 11
 - Average duration: 4 minutes
-- Total execution time: 0.9 hours
+- Total execution time: 1.0 hours
 
 **By Phase:**
 
@@ -32,10 +32,11 @@ Progress: [█████████░] 95%
 | 03    | 2     | 5 min  | 2.5 min  |
 | 04    | 1     | 3 min  | 3 min    |
 | 05    | 2     | 5 min  | 2.5 min  |
+| 06    | 1     | 3 min  | 3 min    |
 
 **Recent Trend:**
-- Last 5 plans: 03-01 (3m), 03-02 (2m), 04-01 (3m), 05-01 (3m), 05-02 (2m)
-- Trend: Phases 3-5 executing cleanly — all plans under 3 minutes
+- Last 5 plans: 03-02 (2m), 04-01 (3m), 05-01 (3m), 05-02 (2m), 06-01 (3m)
+- Trend: Phases 3-6 executing cleanly — all plans under 3 minutes
 
 *Updated after each plan completion*
 
@@ -97,6 +98,9 @@ Recent decisions affecting current work:
 - Clipboard save/restore with configurable 300ms delay prevents race condition — 05-01
 - SpacingTracker prepends space between consecutive dictations — 05-02
 - Spacing resets on newlines, cancel, stop, and errors — 05-02
+- Subprocess isolation for GTK overlay — avoids main loop conflicts with daemon — 06-01
+- ctypes CDLL preload of libgtk4-layer-shell.so before any gi imports — 06-01
+- System packages only (PyGObject, pycairo, gtk4-layer-shell) — no pip deps for overlay — 06-01
 
 ### Pending Todos
 
@@ -115,9 +119,9 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-18 (execution)
-Stopped at: Completed 05-02-PLAN.md - Dictation spacing tracker. Phase 5 complete (2/2 plans done).
+Stopped at: Completed 06-01-PLAN.md - Overlay module. Phase 6 plan 1/1 done.
 Resume file: None
 
 ---
 *State initialized: 2026-02-15*
-*Last updated: 2026-02-18 (05-02 complete — Phase 5 done)*
+*Last updated: 2026-02-18 (06-01 complete)*

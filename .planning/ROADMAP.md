@@ -112,10 +112,11 @@ Plans:
   4. Overlay uses Wayland layer-shell (works on Hyprland, Sway) with X11 fallback
   5. Overlay does not steal focus or interfere with text input in the active window
   6. Visual style: white waveform on blue background, polished appearance
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 06-01: TBD during planning
+- [ ] 06-01-PLAN.md — Overlay subprocess module: OverlayManager API, GTK4 window with layer-shell, Cairo waveform widget, stdin pipe reader
+- [ ] 06-02-PLAN.md — Pipeline integration: amplitude callback on AudioRecorder, overlay show/hide in coordinator state machine, overlay config defaults
 
 ### Phase 7: System Integration
 **Goal**: LinuxWhisper runs as a systemd user service with auto-start and crash recovery
@@ -158,7 +159,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 3. Enhanced Input Modes | 2/2 | ✓ Complete | 2026-02-18 |
 | 4. Transcription Features | 1/1 | ✓ Complete | 2026-02-18 |
 | 5. Output Refinement | 2/2 | ✓ Complete | 2026-02-18 |
-| 6. Recording Overlay | 0/? | Not started | - |
+| 6. Recording Overlay | 0/2 | Not started | - |
 | 7. System Integration | 0/? | Not started | - |
 | 8. Distribution | 0/? | Not started | - |
 
@@ -171,4 +172,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 *Phase 4 completed: 2026-02-18*
 *Phase 5 completed: 2026-02-18*
 *Phases 6-7 restructured: 2026-02-18 — Recording Overlay added as Phase 6, old Phase 6 (System Integration) slimmed and moved to Phase 7, Distribution moved to Phase 8*
-*Ready for execution: Phase 6*
+*Phase 6 planned: 2026-02-18 — 2 plans, 2 waves*

@@ -30,20 +30,23 @@ __all__ = [
 def create_injector(config: dict | None = None) -> FallbackInjector:
     """Create a FallbackInjector with appropriate backends for current session.
 
-    Backend selection order:
+    Backend chain order (determines ASCII fast path):
 
     Wayland (wlroots: Hyprland, Sway, or unknown compositor):
         1. wtype (Unicode, no daemon needed)
-        2. clipboard-wayland (Unicode, requires wl-clipboard)
-        3. ydotool (ASCII only)
+        2. ydotool (ASCII fast path — proven reliable)
+        3. clipboard-wayland (Unicode fallback, requires wl-clipboard)
 
     Wayland (GNOME, KDE):
-        1. clipboard-wayland (Unicode, requires wl-clipboard)
-        2. ydotool (ASCII only)
+        1. ydotool (ASCII fast path)
+        2. clipboard-wayland (Unicode fallback, requires wl-clipboard)
 
     X11:
         1. xdotool (ASCII)
         2. clipboard-x11 (Unicode fallback, requires xclip)
+
+    For Unicode text, FallbackInjector tries Unicode-capable backends
+    first (wtype, clipboard) regardless of chain position.
 
     Unknown session:
         All backends in order (unavailable ones filtered automatically).
@@ -70,8 +73,11 @@ def create_injector(config: dict | None = None) -> FallbackInjector:
         # wtype works on wlroots; also try on unknown compositors
         if compositor not in ("gnome", "kde"):
             backends.append(WtypeBackend())
-        backends.append(ClipboardWaylandBackend(restore_delay_ms=restore_delay))
+        # ydotool before clipboard: proven reliable for ASCII, clipboard
+        # is only needed for Unicode (FallbackInjector's Unicode-first
+        # loop routes non-ASCII text to clipboard automatically)
         backends.append(YdotoolBackend())
+        backends.append(ClipboardWaylandBackend(restore_delay_ms=restore_delay))
 
     elif session_type == "x11":
         backends = [
@@ -84,9 +90,9 @@ def create_injector(config: dict | None = None) -> FallbackInjector:
         logger.warning("Session type unknown, building full fallback chain")
         backends = [
             WtypeBackend(),
-            ClipboardWaylandBackend(restore_delay_ms=restore_delay),
             YdotoolBackend(),
             XdotoolBackend(),
+            ClipboardWaylandBackend(restore_delay_ms=restore_delay),
             ClipboardX11Backend(restore_delay_ms=restore_delay),
         ]
 

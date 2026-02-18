@@ -15,6 +15,16 @@ from linuxwhisper.service import (
 )
 
 
+def _systemctl(action: str) -> subprocess.CompletedProcess:
+    """Run a systemctl --user command for the linuxwhisper service."""
+    return subprocess.run(
+        ["systemctl", "--user", action, "linuxwhisper.service"],
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+
+
 @click.group()
 @click.version_option(version="0.1.0", prog_name="linuxwhisper")
 def cli():
@@ -25,6 +35,18 @@ def cli():
 @cli.command()
 def start():
     """Start the LinuxWhisper daemon in the background."""
+    if is_service_enabled():
+        if is_service_active():
+            click.echo("LinuxWhisper daemon is already running (systemd-managed)")
+            sys.exit(0)
+        result = _systemctl("start")
+        if result.returncode == 0:
+            click.echo("LinuxWhisper daemon started (systemd-managed)")
+        else:
+            click.echo(f"Failed to start via systemd: {result.stderr.strip()}")
+            sys.exit(1)
+        return
+
     # Check if daemon is already running
     pid = read_pid()
     if pid is not None:
@@ -54,6 +76,18 @@ def start():
 @cli.command()
 def stop():
     """Stop the LinuxWhisper daemon."""
+    if is_service_enabled():
+        if not is_service_active():
+            click.echo("LinuxWhisper daemon is not running (systemd-managed)")
+            sys.exit(1)
+        result = _systemctl("stop")
+        if result.returncode == 0:
+            click.echo("LinuxWhisper daemon stopped (systemd-managed)")
+        else:
+            click.echo(f"Failed to stop via systemd: {result.stderr.strip()}")
+            sys.exit(1)
+        return
+
     # Read PID
     pid = read_pid()
     if pid is None:
@@ -85,6 +119,18 @@ def stop():
 @cli.command()
 def reload():
     """Reload the daemon configuration."""
+    if is_service_enabled():
+        if not is_service_active():
+            click.echo("LinuxWhisper daemon is not running (systemd-managed)")
+            sys.exit(1)
+        result = _systemctl("reload")
+        if result.returncode == 0:
+            click.echo("Configuration reloaded (systemd-managed)")
+        else:
+            click.echo(f"Failed to reload via systemd: {result.stderr.strip()}")
+            sys.exit(1)
+        return
+
     # Read PID
     pid = read_pid()
     if pid is None:
@@ -103,6 +149,19 @@ def reload():
 @cli.command()
 def status():
     """Check daemon status."""
+    if is_service_enabled():
+        result = subprocess.run(
+            ["systemctl", "--user", "status", "linuxwhisper.service"],
+            capture_output=True, text=True, timeout=30,
+        )
+        if result.stdout.strip():
+            click.echo(result.stdout.strip())
+        if is_service_active():
+            click.echo("\nLinuxWhisper daemon is running (systemd-managed)")
+        else:
+            click.echo("\nLinuxWhisper daemon is not running (systemd-managed)")
+        return
+
     pid = read_pid()
     if pid is not None:
         click.echo(f"LinuxWhisper daemon is running (PID {pid})")

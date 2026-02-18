@@ -2,7 +2,7 @@
 
 ## Overview
 
-LinuxWhisper delivers local voice dictation for Linux through seven phases, starting with daemon foundation and basic dictation pipeline, then progressively adding modes (toggle), optimizations (model selection), and production features (system tray, AUR packaging). The architecture validates critical decisions early (evdev hotkeys, ydotool injection, daemon-loaded models) to avoid costly rewrites.
+LinuxWhisper delivers local voice dictation for Linux through eight phases, starting with daemon foundation and basic dictation pipeline, then progressively adding modes (toggle), optimizations (model selection), visual feedback (waveform overlay), and production features (systemd service, AUR packaging). The architecture validates critical decisions early (evdev hotkeys, ydotool injection, daemon-loaded models) to avoid costly rewrites.
 
 ## Phases
 
@@ -15,8 +15,9 @@ LinuxWhisper delivers local voice dictation for Linux through seven phases, star
 - [x] **Phase 3: Enhanced Input Modes** - Toggle mode, configurable hotkeys, non-interference validation ✓ 2026-02-18
 - [x] **Phase 4: Transcription Features** - Model selection, daemon memory loading, sentence formatting ✓ 2026-02-18
 - [x] **Phase 5: Output Refinement** - Display server detection, Unicode support, spacing control ✓ 2026-02-18
-- [ ] **Phase 6: System Integration** - System tray icon, desktop notifications, systemd service
-- [ ] **Phase 7: Distribution** - AUR package, post-install instructions
+- [ ] **Phase 6: Recording Overlay** - Live waveform widget during recording, layer-shell positioning
+- [ ] **Phase 7: System Integration** - systemd user service, auto-start, crash recovery
+- [ ] **Phase 8: Distribution** - AUR package, post-install instructions
 
 ## Phase Details
 
@@ -100,22 +101,37 @@ Plans:
 - [x] 05-01-PLAN.md — Multi-backend fallback injector with compositor detection, wtype, clipboard backends, and Unicode support
 - [x] 05-02-PLAN.md — Dictation spacing tracker and pipeline integration
 
-### Phase 6: System Integration
-**Goal**: LinuxWhisper integrates with system as autostart service with visual feedback
-**Depends on**: Phase 1
-**Requirements**: SYS-02, SYS-03
+### Phase 6: Recording Overlay
+**Goal**: Small, discrete live waveform overlay appears during recording as visual feedback
+**Depends on**: Phase 2
+**Requirements**: UI-01
 **Success Criteria** (what must be TRUE):
-  1. systemd user service starts daemon on login
-  2. Service automatically restarts on crash
-  3. System tray icon shows idle/recording/transcribing state
-  4. Desktop notifications show transcription start/complete/error
-  5. Service stops cleanly on logout without orphaned processes
+  1. Waveform overlay appears when recording starts, disappears when recording stops
+  2. Overlay displays a live audio waveform (updates in real-time from mic input)
+  3. Overlay is small and discrete, positioned at the edge/corner of the screen
+  4. Overlay uses Wayland layer-shell (works on Hyprland, Sway) with X11 fallback
+  5. Overlay does not steal focus or interfere with text input in the active window
+  6. Visual style: white waveform on blue background, polished appearance
 **Plans**: TBD
 
 Plans:
 - [ ] 06-01: TBD during planning
 
-### Phase 7: Distribution
+### Phase 7: System Integration
+**Goal**: LinuxWhisper runs as a systemd user service with auto-start and crash recovery
+**Depends on**: Phase 1
+**Requirements**: SYS-02
+**Success Criteria** (what must be TRUE):
+  1. systemd user service starts daemon on login
+  2. Service automatically restarts on crash
+  3. Service stops cleanly on logout without orphaned processes
+  4. Service file installed to correct systemd user unit path
+**Plans**: TBD
+
+Plans:
+- [ ] 07-01: TBD during planning
+
+### Phase 8: Distribution
 **Goal**: LinuxWhisper installable via AUR with complete setup instructions
 **Depends on**: All previous phases
 **Requirements**: PKG-01, PKG-02
@@ -128,12 +144,12 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 07-01: TBD during planning
+- [ ] 08-01: TBD during planning
 
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -142,8 +158,9 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 | 3. Enhanced Input Modes | 2/2 | ✓ Complete | 2026-02-18 |
 | 4. Transcription Features | 1/1 | ✓ Complete | 2026-02-18 |
 | 5. Output Refinement | 2/2 | ✓ Complete | 2026-02-18 |
-| 6. System Integration | 0/? | Not started | - |
-| 7. Distribution | 0/? | Not started | - |
+| 6. Recording Overlay | 0/? | Not started | - |
+| 7. System Integration | 0/? | Not started | - |
+| 8. Distribution | 0/? | Not started | - |
 
 ---
 *Roadmap created: 2026-02-15*
@@ -153,4 +170,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 *Phase 3 completed: 2026-02-18*
 *Phase 4 completed: 2026-02-18*
 *Phase 5 completed: 2026-02-18*
+*Phases 6-7 restructured: 2026-02-18 — Recording Overlay added as Phase 6, old Phase 6 (System Integration) slimmed and moved to Phase 7, Distribution moved to Phase 8*
 *Ready for execution: Phase 6*

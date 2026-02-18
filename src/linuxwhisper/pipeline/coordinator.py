@@ -7,6 +7,7 @@ import threading
 from linuxwhisper.audio import AudioRecorder
 from linuxwhisper.hotkey import HotkeyDetector, check_input_permissions, get_permission_instructions
 from linuxwhisper.injection import create_injector
+from linuxwhisper.injection.spacing import SpacingTracker
 from linuxwhisper.transcription import TranscriptionEngine
 from linuxwhisper.transcription.formatting import format_sentence
 from linuxwhisper.input.modes import InputMode, get_mode_from_config, DEFAULT_TOGGLE_TIMEOUT
@@ -73,6 +74,9 @@ class DictationPipeline:
         # Toggle timeout timer
         self._timeout_timer: threading.Timer | None = None
 
+        # Spacing tracker for consecutive dictations
+        self._spacing = SpacingTracker()
+
         logger.info(f"DictationPipeline initialized (hotkey={hotkey}, model={model})")
 
     def _validate_transition(self, new_state: PipelineState) -> bool:
@@ -135,6 +139,10 @@ class DictationPipeline:
             if self._config.get("sentence_format", True):
                 text = format_sentence(text)
 
+            # Apply spacing between consecutive dictations
+            if self._config.get("auto_space", True):
+                text = self._spacing.prepare_text(text)
+
             # Inject transcribed text
             self._transition(PipelineState.INJECTING)
             self._injector.type_text(text)
@@ -145,6 +153,7 @@ class DictationPipeline:
 
         except Exception as e:
             logger.error(f"Error during dictation processing: {e}", exc_info=True)
+            self._spacing.reset()
             self._transition(PipelineState.IDLE)
 
     def _cancel_toggle_recording(self) -> None:
@@ -165,6 +174,7 @@ class DictationPipeline:
 
             # Stop recording but discard audio (do not transcribe)
             self._recorder.stop()
+            self._spacing.reset()
 
             # Return to idle
             self._transition(PipelineState.IDLE)
@@ -297,6 +307,7 @@ class DictationPipeline:
 
         # Unload model
         self._engine.unload_model()
+        self._spacing.reset()
 
         logger.info("Dictation pipeline stopped")
 

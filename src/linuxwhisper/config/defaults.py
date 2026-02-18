@@ -14,6 +14,7 @@ DEFAULT_CONFIG = {
     "model": "small",
     "sentence_format": True,
     "clipboard_restore_delay_ms": 300,
+    "auto_space": True,
     "audio": {
         "sample_rate": 16000,
         "channels": 1,

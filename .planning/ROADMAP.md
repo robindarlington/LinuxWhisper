@@ -12,7 +12,7 @@ LinuxWhisper delivers local voice dictation for Linux through seven phases, star
 
 - [x] **Phase 1: Foundation** - Daemon process, config management, project structure ✓ 2026-02-15
 - [x] **Phase 2: Core Dictation Pipeline** - Hold-to-talk hotkey, audio capture, Whisper transcription, text injection ✓ 2026-02-18
-- [ ] **Phase 3: Enhanced Input Modes** - Toggle mode, configurable hotkeys, non-interference validation
+- [x] **Phase 3: Enhanced Input Modes** - Toggle mode, configurable hotkeys, non-interference validation ✓ 2026-02-18
 - [ ] **Phase 4: Transcription Features** - Model selection, daemon memory loading, sentence formatting
 - [ ] **Phase 5: Output Refinement** - Display server detection, Unicode support, spacing control
 - [ ] **Phase 6: System Integration** - System tray icon, desktop notifications, systemd service
@@ -67,7 +67,7 @@ Plans:
 
 Plans:
 - [x] 03-01-PLAN.md — Toggle mode with timeout and escape cancel, InputMode enum, friendly hotkey aliases, compositor conflict detection (Hyprland/Sway/GNOME/KDE/X11)
-- [ ] 03-02-PLAN.md — Updated config defaults (HOME hotkey, toggle_timeout), state-aware config reload, daemon integration
+- [x] 03-02-PLAN.md — Updated config defaults (HOME hotkey, toggle_timeout), state-aware config reload, daemon integration
 
 ### Phase 4: Transcription Features
 **Goal**: User can select Whisper models and get fast, formatted transcriptions
@@ -138,7 +138,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | ✓ Complete | 2026-02-15 |
 | 2. Core Dictation Pipeline | 4/4 | ✓ Complete | 2026-02-18 |
-| 3. Enhanced Input Modes | 1/2 | In Progress | - |
+| 3. Enhanced Input Modes | 2/2 | ✓ Complete | 2026-02-18 |
 | 4. Transcription Features | 0/? | Not started | - |
 | 5. Output Refinement | 0/? | Not started | - |
 | 6. System Integration | 0/? | Not started | - |
@@ -149,4 +149,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 *Phase 1 completed: 2026-02-15*
 *Phase 2 completed: 2026-02-18*
 *Phase 4 (Audio Optimization) removed: 2026-02-18 — folded into Phase 3, phases renumbered*
-*Ready for execution: Phase 3*
+*Phase 3 completed: 2026-02-18*
+*Ready for execution: Phase 4*

@@ -9,12 +9,12 @@ See: .planning/PROJECT.md (updated 2026-02-14)
 
 ## Current Position
 
-Phase: 3 of 7 (Enhanced Input Modes) - IN PROGRESS
-Plan: 1 of 2 in current phase
-Status: In Progress
-Last activity: 2026-02-18 — Completed plan 03-01 (Toggle Mode + Hotkey Aliases + Compositor Detection)
+Phase: 3 of 7 (Enhanced Input Modes) - COMPLETE
+Plan: 2 of 2 in current phase
+Status: Phase Complete
+Last activity: 2026-02-18 — Completed plan 03-02 (Config Defaults, Validation Wiring, State-Aware Reload)
 
-Progress: [███████░░░] 80%
+Progress: [████████░░] 85%
 
 ## Performance Metrics
 
@@ -29,11 +29,11 @@ Progress: [███████░░░] 80%
 |-------|-------|-------|----------|
 | 01    | 2     | 6 min  | 3 min    |
 | 02    | 4     | 30 min | 7.5 min  |
-| 03    | 1     | 3 min  | 3 min    |
+| 03    | 2     | 5 min  | 2.5 min  |
 
 **Recent Trend:**
-- Last 5 plans: 02-02 (11m), 02-03 (2m), 02-04 (12m), 03-01 (3m)
-- Trend: 03-01 was fast — clean execution, all checks first run
+- Last 5 plans: 02-03 (2m), 02-04 (12m), 03-01 (3m), 03-02 (2m)
+- Trend: Phase 3 executed cleanly — both plans under 3 minutes, no deviations
 
 *Updated after each plan completion*
 
@@ -70,6 +70,11 @@ Recent decisions affecting current work:
 - Permission check at daemon startup prevents cryptic evdev errors — 02-03
 - Pre-load Whisper model on pipeline start for fast first dictation — 02-03
 - Config reload requires daemon restart for hotkey/model changes (acceptable for Phase 2) — 02-03
+- DEFAULT_CONFIG hotkey changed from F13 to HOME — more universally available key — 03-02
+- toggle_timeout=120 added to DEFAULT_CONFIG — feeds toggle mode pipeline — 03-02
+- reload_config_safe defers (not fails) when pipeline busy — user retries with SIGHUP — 03-02
+- Invalid new config during reload is rejected silently (old config preserved) — 03-02
+- set_pipeline_ref called after pipeline.start() — ensures pipeline ready before wiring — 03-02
 - PAUSE key doesn't support hold-to-talk (instant press+release) — changed default to HOME — 02-04
 - UInput passthrough via UInput.from_device re-injects non-hotkey events — 02-04
 - udev rule for uinput may not apply on boot — manual chmod needed, defer to Phase 7/8 — 02-04
@@ -96,9 +101,9 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-18 (execution)
-Stopped at: Completed 03-01-PLAN.md - Toggle Mode + Hotkey Aliases + Compositor Detection. 1 of 2 Phase 3 plans done.
+Stopped at: Completed 03-02-PLAN.md - Config Defaults, Validation Wiring, and State-Aware Reload. Phase 3 complete (2/2 plans done).
 Resume file: None
 
 ---
 *State initialized: 2026-02-15*
-*Last updated: 2026-02-18 (03-01 complete)*
+*Last updated: 2026-02-18 (03-02 complete — Phase 3 done)*

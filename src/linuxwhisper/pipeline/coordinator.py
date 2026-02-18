@@ -8,6 +8,7 @@ from linuxwhisper.audio import AudioRecorder
 from linuxwhisper.hotkey import HotkeyDetector, check_input_permissions, get_permission_instructions
 from linuxwhisper.injection import create_injector
 from linuxwhisper.injection.spacing import SpacingTracker
+from linuxwhisper.overlay import OverlayManager
 from linuxwhisper.transcription import TranscriptionEngine
 from linuxwhisper.transcription.formatting import format_sentence
 from linuxwhisper.input.modes import InputMode, get_mode_from_config, DEFAULT_TOGGLE_TIMEOUT
@@ -77,6 +78,17 @@ class DictationPipeline:
         # Spacing tracker for consecutive dictations
         self._spacing = SpacingTracker()
 
+        # Overlay manager (optional, controlled by config)
+        overlay_config = config.get("overlay", {})
+        if overlay_config.get("enabled", True):
+            self._overlay = OverlayManager(config=overlay_config)
+        else:
+            self._overlay = None
+
+        # Wire amplitude callback to overlay
+        if self._overlay is not None:
+            self._recorder.set_amplitude_callback(self._on_audio_amplitude)
+
         logger.info(f"DictationPipeline initialized (hotkey={hotkey}, model={model})")
 
     def _validate_transition(self, new_state: PipelineState) -> bool:
@@ -105,6 +117,11 @@ class DictationPipeline:
             self._state = new_state
             logger.info(f"Pipeline: {old_state.name} -> {new_state.name}")
 
+    def _on_audio_amplitude(self, rms: float) -> None:
+        """Forward amplitude from audio callback to overlay subprocess."""
+        if self._overlay is not None and self._overlay.is_running():
+            self._overlay.send_amplitude(rms)
+
     def _process_recording(self) -> None:
         """Stop recording and process the captured audio (transcribe + inject).
 
@@ -112,6 +129,9 @@ class DictationPipeline:
         Cancels any active timeout timer, stops recording, transcribes, and
         injects the resulting text. Always returns to IDLE.
         """
+        if self._overlay is not None:
+            self._overlay.hide()
+
         try:
             # Cancel any active timeout timer first
             self._cancel_timeout()
@@ -169,6 +189,9 @@ class DictationPipeline:
             logger.info("Toggle recording cancelled via Escape")
             self._transition(PipelineState.CANCELLING)
 
+            if self._overlay is not None:
+                self._overlay.hide()
+
             # Cancel any active timeout timer
             self._cancel_timeout()
 
@@ -219,6 +242,8 @@ class DictationPipeline:
             if self._state == PipelineState.IDLE:
                 self._transition(PipelineState.RECORDING)
                 self._recorder.start()
+                if self._overlay is not None:
+                    self._overlay.show()
                 logger.info("Recording started")
 
         elif self._mode == InputMode.TOGGLE:
@@ -226,6 +251,8 @@ class DictationPipeline:
             if self._state == PipelineState.IDLE:
                 self._transition(PipelineState.RECORDING)
                 self._recorder.start()
+                if self._overlay is not None:
+                    self._overlay.show()
                 self._start_timeout()
                 logger.info("Toggle: recording started")
 
@@ -304,6 +331,10 @@ class DictationPipeline:
         # Stop recording if in progress
         if self._recorder.is_recording:
             self._recorder.stop()
+
+        # Hide overlay if running
+        if self._overlay is not None:
+            self._overlay.hide()
 
         # Unload model
         self._engine.unload_model()

@@ -11,8 +11,9 @@ DEFAULT_CONFIG = {
     # When timeout fires, captured audio is transcribed (not discarded).
     # Only applies to toggle mode. Set to 0 to disable.
     "toggle_timeout": 120,
-    "model": "base.en",
+    "model": "small",
     "sentence_format": True,
+    "clipboard_restore_delay_ms": 300,
     "audio": {
         "sample_rate": 16000,
         "channels": 1,

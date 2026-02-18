@@ -63,7 +63,7 @@ class DictationPipeline:
         self._detector = HotkeyDetector(hotkey=hotkey)
         self._recorder = AudioRecorder(sample_rate=sample_rate, channels=channels)
         self._engine = TranscriptionEngine(model_size=model)
-        self._injector = create_injector()
+        self._injector = create_injector(config)
 
         # State machine
         self._state = PipelineState.IDLE

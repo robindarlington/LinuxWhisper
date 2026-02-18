@@ -5,51 +5,41 @@ import os
 import shutil
 import subprocess
 
+from .base import InjectorBackend
+
 logger = logging.getLogger(__name__)
 
 
-class WaylandInjector:
-    """Text injector for Wayland using ydotool."""
+class YdotoolBackend(InjectorBackend):
+    """Text injector using ydotool for Wayland.
 
-    def __init__(self):
-        """Initialize Wayland injector with validation checks."""
-        # Check if ydotool is installed
+    Works on all Wayland compositors via /dev/uinput (kernel-level).
+    ASCII only -- ydotool simulates physical keyboard scancodes which
+    have no concept of Unicode code points.
+    """
+
+    def name(self) -> str:
+        return "ydotool"
+
+    def is_available(self) -> bool:
         if not shutil.which("ydotool"):
-            raise RuntimeError(
-                "ydotool not found. Install with: sudo pacman -S ydotool"
-            )
-
+            return False
         # Check if ydotoold socket exists
         socket_path = os.environ.get("YDOTOOL_SOCKET", "/tmp/.ydotool_socket")
         alt_socket = f"/run/user/{os.getuid()}/.ydotool_socket"
+        return os.path.exists(socket_path) or os.path.exists(alt_socket)
 
-        socket_exists = os.path.exists(socket_path) or os.path.exists(alt_socket)
+    def supports_unicode(self) -> bool:
+        return False
 
-        if not socket_exists:
-            raise RuntimeError(
-                "ydotoold daemon not running. "
-                "Start with: systemctl --user start ydotool"
-            )
-
-        logger.info("WaylandInjector initialized")
-
-    def type_text(self, text: str, delay_ms: int = 12) -> None:
-        """Type text into the active window.
-
-        Args:
-            text: Text to type
-            delay_ms: Delay between keystrokes in milliseconds
-
-        Raises:
-            RuntimeError: If text injection fails
-        """
+    def type_text(self, text: str) -> None:
         try:
             subprocess.run(
-                ["ydotool", "type", "--key-delay", str(delay_ms), "--", text],
+                ["ydotool", "type", "--key-delay", "12", "--", text],
                 check=True,
                 timeout=10,
             )
-            logger.info(f"Injected {len(text)} characters via ydotool")
+            logger.debug(f"Injected {len(text)} chars via ydotool")
         except subprocess.TimeoutExpired as e:
             raise RuntimeError(f"ydotool timeout: {e}") from e
         except subprocess.CalledProcessError as e:

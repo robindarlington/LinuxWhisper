@@ -52,3 +52,64 @@ def detect_session_type() -> str:
 
     logger.warning("Could not detect session type - returning 'unknown'")
     return "unknown"
+
+
+def detect_compositor() -> str:
+    """Detect the running Wayland compositor.
+
+    Returns one of: 'hyprland', 'sway', 'gnome', 'kde', 'unknown'
+    """
+    # Check environment variables (fast path)
+    if os.environ.get("HYPRLAND_INSTANCE_SIGNATURE"):
+        logger.info("Detected compositor: hyprland (via HYPRLAND_INSTANCE_SIGNATURE)")
+        return "hyprland"
+    if os.environ.get("SWAYSOCK"):
+        logger.info("Detected compositor: sway (via SWAYSOCK)")
+        return "sway"
+
+    desktop = os.environ.get("XDG_CURRENT_DESKTOP", "").lower()
+    if "hyprland" in desktop:
+        logger.info("Detected compositor: hyprland (via XDG_CURRENT_DESKTOP)")
+        return "hyprland"
+    if "sway" in desktop:
+        logger.info("Detected compositor: sway (via XDG_CURRENT_DESKTOP)")
+        return "sway"
+    if "gnome" in desktop:
+        logger.info("Detected compositor: gnome (via XDG_CURRENT_DESKTOP)")
+        return "gnome"
+    if "kde" in desktop or "plasma" in desktop:
+        logger.info("Detected compositor: kde (via XDG_CURRENT_DESKTOP)")
+        return "kde"
+
+    # Fallback: check running processes
+    for compositor, process_name in [
+        ("hyprland", "Hyprland"),
+        ("sway", "sway"),
+        ("gnome", "gnome-shell"),
+        ("kde", "kwin_wayland"),
+    ]:
+        try:
+            result = subprocess.run(
+                ["pgrep", "-x", process_name],
+                capture_output=True, timeout=2,
+            )
+            if result.returncode == 0:
+                logger.info(f"Detected compositor: {compositor} (via pgrep)")
+                return compositor
+        except (subprocess.TimeoutExpired, FileNotFoundError):
+            pass
+
+    logger.info("Could not detect compositor - returning 'unknown'")
+    return "unknown"
+
+
+def is_wlroots_compositor(compositor: str) -> bool:
+    """Check if compositor supports zwp_virtual_keyboard_v1 (wtype works).
+
+    Args:
+        compositor: Compositor name from detect_compositor().
+
+    Returns:
+        True if compositor is wlroots-based (Hyprland, Sway).
+    """
+    return compositor in ("hyprland", "sway")

@@ -5,47 +5,40 @@ import os
 import shutil
 import subprocess
 
+from .base import InjectorBackend
+
 logger = logging.getLogger(__name__)
 
 
-class X11Injector:
-    """Text injector for X11 using xdotool."""
+class XdotoolBackend(InjectorBackend):
+    """Text injector using xdotool for X11.
 
-    def __init__(self):
-        """Initialize X11 injector with validation checks."""
-        # Check if xdotool is installed
-        if not shutil.which("xdotool"):
-            raise RuntimeError(
-                "xdotool not found. Install with: sudo pacman -S xdotool"
-            )
+    Partial Unicode support (locale-dependent). Does NOT work in native
+    Wayland windows -- only XWayland.
+    """
 
-        # Check if DISPLAY is set (X11 session requirement)
-        if not os.environ.get("DISPLAY"):
-            raise RuntimeError("DISPLAY not set - not an X11 session")
+    def name(self) -> str:
+        return "xdotool"
 
-        logger.info("X11Injector initialized")
+    def is_available(self) -> bool:
+        return (
+            shutil.which("xdotool") is not None
+            and os.environ.get("DISPLAY") is not None
+        )
 
-    def type_text(self, text: str, delay_ms: int = 12) -> None:
-        """Type text into the active window.
+    def supports_unicode(self) -> bool:
+        return False
 
-        Args:
-            text: Text to type
-            delay_ms: Delay between keystrokes in milliseconds
-
-        Raises:
-            RuntimeError: If text injection fails
-        """
+    def type_text(self, text: str) -> None:
         try:
-            # Set LANG to ensure proper UTF-8 handling
             env = {**os.environ, "LANG": "en_US.UTF-8"}
-
             subprocess.run(
-                ["xdotool", "type", "--delay", str(delay_ms), "--", text],
+                ["xdotool", "type", "--delay", "12", "--clearmodifiers", "--", text],
                 check=True,
                 timeout=10,
                 env=env,
             )
-            logger.info(f"Injected {len(text)} characters via xdotool")
+            logger.debug(f"Injected {len(text)} chars via xdotool")
         except subprocess.TimeoutExpired as e:
             raise RuntimeError(f"xdotool timeout: {e}") from e
         except subprocess.CalledProcessError as e:

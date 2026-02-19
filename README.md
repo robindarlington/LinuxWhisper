@@ -2,6 +2,10 @@
 
 Hold a key, speak, text appears in the active window. Local voice dictation for Linux that works on both X11 and Wayland.
 
+```bash
+yay -S linuxwhisper-git
+```
+
 LinuxWhisper uses OpenAI's Whisper model running entirely on your machine — no cloud API, no internet required for transcription. It runs as a background daemon, captures audio while you hold a hotkey, transcribes it locally, and types the result into whatever window is focused.
 
 ## Disclaimer

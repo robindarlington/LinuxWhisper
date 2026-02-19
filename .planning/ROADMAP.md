@@ -143,10 +143,11 @@ Plans:
   3. Package includes all runtime dependencies (no missing transitive deps)
   4. Fresh install works without errors on minimal Arch installation
   5. Package passes namcap validation with no errors
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 08-01: TBD during planning
+- [ ] 08-01-PLAN.md — Package prerequisites (LICENSE, pyproject.toml), AUR files (PKGBUILD, .install), service module system detection, README update
+- [ ] 08-02-PLAN.md — Build validation (makepkg), namcap validation, .SRCINFO generation, post-install verification
 
 ## Progress
 
@@ -162,7 +163,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 5. Output Refinement | 2/2 | ✓ Complete | 2026-02-18 |
 | 6. Recording Overlay | 2/2 | ✓ Complete | 2026-02-18 |
 | 7. System Integration | 2/2 | ✓ Complete | 2026-02-18 |
-| 8. Distribution | 0/? | Not started | - |
+| 8. Distribution | 0/2 | Not started | - |
 
 ---
 *Roadmap created: 2026-02-15*
@@ -177,3 +178,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 *Phase 6 completed: 2026-02-18*
 *Phase 7 planned: 2026-02-18 — 2 plans, 2 waves*
 *Phase 7 completed: 2026-02-18*
+*Phase 8 planned: 2026-02-19 — 2 plans, 2 waves*

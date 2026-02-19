@@ -1,6 +1,6 @@
 pkgbase = linuxwhisper-git
 	pkgdesc = Linux desktop voice dictation tool using local Whisper
-	pkgver = 0.1.0
+	pkgver = 0.1.0.r71.a01d1c0
 	pkgrel = 1
 	url = https://github.com/robindarlington/linuxwhisper
 	install = linuxwhisper.install

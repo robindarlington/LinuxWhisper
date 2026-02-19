@@ -1,26 +1,37 @@
 post_install() {
+    # Auto-setup: load uinput kernel module
+    if ! lsmod | grep -q uinput; then
+        modprobe uinput 2>/dev/null && echo ":: Loaded uinput kernel module"
+    fi
+
+    # Auto-setup: add invoking user to input group
+    if [ -n "$SUDO_USER" ]; then
+        if ! groups "$SUDO_USER" 2>/dev/null | grep -qw input; then
+            usermod -aG input "$SUDO_USER" 2>/dev/null && \
+                echo ":: Added $SUDO_USER to input group (log out and back in to apply)"
+        fi
+    fi
+
     echo ""
     echo "============================================================"
     echo "  LinuxWhisper — Post-Install Setup"
     echo "============================================================"
     echo ""
-    echo "  1. Add your user to the input group:"
+    echo "  The following were configured automatically:"
+    echo "    - uinput kernel module loaded (persists via modules-load.d)"
+    echo "    - User added to input group (log out/in to apply)"
     echo ""
-    echo "     sudo usermod -aG input \$USER"
+    echo "  Remaining manual steps:"
     echo ""
-    echo "  2. Load the uinput kernel module (persists on next boot):"
-    echo ""
-    echo "     sudo modprobe uinput"
-    echo ""
-    echo "  3. Enable ydotool for Wayland text injection:"
+    echo "  1. Enable ydotool for Wayland text injection:"
     echo ""
     echo "     systemctl --user enable --now ydotool"
     echo ""
     echo "     Note: the service name is 'ydotool', NOT 'ydotoold'."
     echo ""
-    echo "  4. Log out and back in for group changes to take effect."
+    echo "  2. Log out and back in for group changes to take effect."
     echo ""
-    echo "  5. Start LinuxWhisper:"
+    echo "  3. Start LinuxWhisper:"
     echo ""
     echo "     # One-time start:"
     echo "     linuxwhisper start"

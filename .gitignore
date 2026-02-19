@@ -39,3 +39,9 @@ Thumbs.db
 
 # Project specific
 *.log
+
+# AUR build artifacts
+aur/src/
+aur/pkg/
+aur/*.pkg.tar.zst
+aur/linuxwhisper-git/

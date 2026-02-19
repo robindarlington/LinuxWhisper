@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 
 SERVICE_NAME = "linuxwhisper.service"
+SYSTEM_SERVICE_PATH = Path("/usr/lib/systemd/user") / SERVICE_NAME
 
 SERVICE_TEMPLATE = """\
 [Unit]
@@ -50,9 +51,14 @@ def is_systemd_available() -> bool:
     return shutil.which("systemctl") is not None
 
 
+def is_system_service_installed() -> bool:
+    """Check if a system-wide service file exists (installed by AUR package)."""
+    return SYSTEM_SERVICE_PATH.is_file()
+
+
 def is_service_installed() -> bool:
-    """Check if the service file exists."""
-    return get_service_path().is_file()
+    """Check if the service file exists (user-local or system-wide)."""
+    return get_service_path().is_file() or SYSTEM_SERVICE_PATH.is_file()
 
 
 def is_service_enabled() -> bool:
@@ -85,6 +91,12 @@ def is_service_active() -> bool:
 
 def install_service() -> None:
     """Install the systemd user service file and reload the daemon."""
+    if is_system_service_installed():
+        raise RuntimeError(
+            "A system-wide service file exists at /usr/lib/systemd/user/linuxwhisper.service "
+            "(installed by the AUR package). Remove the package or use "
+            "'systemctl --user enable --now linuxwhisper' directly."
+        )
     if not is_systemd_available():
         raise RuntimeError("systemctl not found. systemd is required for service management.")
     get_service_dir().mkdir(parents=True, exist_ok=True)
@@ -113,10 +125,12 @@ def uninstall_service() -> None:
 
 __all__ = [
     "SERVICE_NAME",
+    "SYSTEM_SERVICE_PATH",
     "get_service_dir",
     "get_service_path",
     "generate_service_file",
     "is_systemd_available",
+    "is_system_service_installed",
     "is_service_installed",
     "is_service_enabled",
     "is_service_active",

@@ -21,13 +21,27 @@ This is early-stage software. Expect rough edges, missing features, and the occa
 
 ## Requirements
 
-- **OS:** Arch-based Linux distro (Arch, Manjaro, EndeavourOS, etc.)
+- **OS:** Linux (Arch-based distros recommended)
 - **Python:** 3.11+
 - **Audio:** Working microphone accessible via PipeWire/PulseAudio
 - **Text injection:** `ydotool` (Wayland) or `xdotool` (X11)
 - **Permissions:** User must be in the `input` group (for hotkey detection via evdev)
 
 ## Installation
+
+### AUR (Arch Linux)
+
+```bash
+# Using yay
+yay -S linuxwhisper-git
+
+# Or using paru
+paru -S linuxwhisper-git
+```
+
+Follow the post-install instructions displayed after installation.
+
+### From source
 
 ```bash
 # Clone the repo
@@ -69,7 +83,7 @@ linuxwhisper stop
 linuxwhisper reload
 ```
 
-Once the daemon is running, hold your configured hotkey (default: `F13`), speak, and release. Your words will be typed into the active window.
+Once the daemon is running, hold your configured hotkey (default: `HOME`), speak, and release. Your words will be typed into the active window.
 
 ### Running in foreground (for debugging)
 
@@ -120,12 +134,11 @@ LinuxWhisper is under active development. The core dictation pipeline (hold key,
 - [x] Local transcription (faster-whisper)
 - [x] Text injection (ydotool for Wayland, xdotool for X11)
 - [x] Pipeline state machine
-- [ ] Toggle mode (press once to start, again to stop)
-- [ ] Voice Activity Detection (auto-stop on silence)
+- [x] Toggle mode (press once to start, again to stop)
+- [x] systemd user service
+- [x] AUR package
 - [ ] System tray icon with recording indicator
 - [ ] Desktop notifications
-- [ ] systemd user service
-- [ ] AUR package
 
 ## Troubleshooting
 

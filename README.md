@@ -29,6 +29,8 @@ This is early-stage software. Expect rough edges, missing features, and the occa
 - **Python:** 3.11+
 - **Audio:** Working microphone accessible via PipeWire/PulseAudio
 - **Text injection:** `ydotool` (Wayland) or `xdotool` (X11)
+- **Chromium on Hyprland/Sway:** Install `wl-clipboard` and enable `ydotool`
+  for clipboard paste. See [Chromium text input](#chromium-text-input).
 - **Permissions:** User must be in the `input` group (for hotkey detection via evdev)
 
 ## Installation
@@ -145,6 +147,60 @@ LinuxWhisper is under active development. The core dictation pipeline (hold key,
 - [ ] Desktop notifications
 
 ## Troubleshooting
+
+### Chromium text input
+
+On Hyprland and Sway, LinuxWhisper checks the focused window before each
+dictation. Chromium-based browsers use clipboard paste when `wtype` is in the
+available input methods. Other apps keep the normal input method order.
+The process executable also identifies installed browser apps with custom
+window classes. LinuxWhisper does not read window titles for this check.
+
+This fixes missing spaces during consecutive dictations in Chromium, including
+T3 Chat. LinuxWhisper adds a leading space between dictations. In `wtype` 0.4,
+the first distinct character receives the key number normally used for Escape.
+Chromium can handle that key number as Escape, even when the character is a
+space. Every later space reuses the same number. Other characters can also
+collide with control keys. See the [upstream bug report](https://github.com/atx/wtype/issues/71).
+This is an input compatibility issue. The transcription itself retains spaces.
+
+Install the paste tools and start the keyboard service:
+
+```bash
+sudo pacman -S --needed wl-clipboard ydotool
+systemctl --user enable --now ydotool
+```
+
+LinuxWhisper saves the current clipboard, copies the dictation, sends Ctrl+V,
+then restores the clipboard after `clipboard_restore_delay_ms` (default: 300).
+If paste fails, it skips `wtype` for that browser window and tries the remaining
+input methods. Unsupported desktops or failed window queries keep the normal
+input method order. This routing currently supports Hyprland and Sway.
+
+Update the permanent installation from AUR:
+
+```bash
+yay -S linuxwhisper-git
+systemctl --user restart linuxwhisper
+```
+
+If you run the temporary Chromium test build, remove its service override after
+the package installation. Then reload the service configuration and restart:
+
+```bash
+rm -f "$XDG_RUNTIME_DIR/systemd/user/linuxwhisper.service.d/90-chromium-test.conf"
+systemctl --user daemon-reload
+systemctl --user restart linuxwhisper
+```
+
+To check the route, dictate twice in a browser field and inspect the service log:
+
+```bash
+journalctl --user -u linuxwhisper -n 50
+```
+
+The log includes `Chromium window: prefer clipboard paste; skip wtype` for a
+detected browser window. Check spaces and punctuation in the field too.
 
 **"Permission denied" on hotkey detection:**
 Make sure you're in the `input` group: `groups $USER` should include `input`. Log out and back in after adding.

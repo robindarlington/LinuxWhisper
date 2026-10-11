@@ -3,6 +3,7 @@
 import logging
 
 from .base import InjectorBackend
+from .focus import focused_window_is_chromium
 
 logger = logging.getLogger(__name__)
 
@@ -33,10 +34,20 @@ class FallbackInjector:
         """
         needs_unicode = not text.isascii()
         errors = []
+        backends = self._backends
+
+        # wtype can map spaces to control keys in Chromium. Prefer a single
+        # clipboard paste and never retry wtype for this target.
+        if any(b.name() == "wtype" for b in backends) and focused_window_is_chromium():
+            backends = sorted(
+                (b for b in backends if b.name() != "wtype"),
+                key=lambda b: not b.name().startswith("clipboard-"),
+            )
+            logger.info("Chromium window: prefer clipboard paste; skip wtype")
 
         # If Unicode needed, try Unicode-capable backends first
         if needs_unicode:
-            for backend in self._backends:
+            for backend in backends:
                 if backend.supports_unicode():
                     try:
                         backend.type_text(text)
@@ -45,7 +56,7 @@ class FallbackInjector:
                         errors.append(f"{backend.name()}: {e}")
 
         # Try all backends in order
-        for backend in self._backends:
+        for backend in backends:
             try:
                 backend.type_text(text)
                 return
